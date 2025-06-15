@@ -61,17 +61,7 @@
       border-right: 2px solid white;
       white-space: nowrap;
       overflow: hidden;
-      width: 0;
-      animation: typing 4s steps(30, end) forwards, blink 0.7s step-end infinite;
-    }
-
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 23ch }
-    }
-
-    @keyframes blink {
-      50% { border-color: transparent; }
+      min-height: 1.5em;
     }
   </style>
 </head>
@@ -81,7 +71,7 @@
 
   <div class="content">
     <h1>Pulitha Sethnindu</h1>
-    <div class="typing">Creative Developer | Tech Explorer</div>
+    <div class="typing" id="typing"></div>
   </div>
 
   <script>
@@ -90,6 +80,45 @@
       blurLayer.style.setProperty('--x', `${e.clientX}px`);
       blurLayer.style.setProperty('--y', `${e.clientY}px`);
     });
+
+    // Typing effect logic
+    const roles = [
+      "Graphic Designer",
+      "Web Developer",
+      "Creative Thinker",
+      "Tech Explorer",
+      "UI/UX Enthusiast"
+    ];
+
+    const typingElement = document.getElementById("typing");
+    let roleIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    function typeEffect() {
+      const current = roles[roleIndex];
+      if (isDeleting) {
+        typingElement.textContent = current.substring(0, charIndex--);
+      } else {
+        typingElement.textContent = current.substring(0, charIndex++);
+      }
+
+      if (!isDeleting && charIndex === current.length + 1) {
+        isDeleting = true;
+        setTimeout(typeEffect, 1000); // Pause before deleting
+        return;
+      }
+
+      if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        roleIndex = (roleIndex + 1) % roles.length;
+      }
+
+      setTimeout(typeEffect, isDeleting ? 50 : 100);
+    }
+
+    // Start typing
+    typeEffect();
   </script>
 </body>
 </html>
