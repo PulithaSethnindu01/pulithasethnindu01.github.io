@@ -5,122 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pulitha Sethnindu | Portfolio</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      height: 100%;
-      overflow: hidden;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      cursor: default;
-    }
-
-    .background {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: url('https://wallpapershome.com/images/pages/pic_h/26426.jpg') no-repeat center center/cover;
-      z-index: -2;
-    }
-
-    .blur-layer {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      backdrop-filter: blur(12px);
-      z-index: -1;
-      pointer-events: none;
-      mask: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
-      -webkit-mask: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
-      transition: mask 0.2s ease, -webkit-mask 0.2s ease;
-    }
-
-    .content {
-      position: relative;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-      color: white;
-      text-align: center;
-      text-shadow: 0 0 10px rgba(0,0,0,0.7);
-    }
-
-    h1 {
-      font-size: 3em;
-      margin-bottom: 0.3em;
-    }
-
-    .typing {
-      font-size: 1.2em;
-      border-right: 2px solid white;
-      white-space: nowrap;
-      overflow: hidden;
-      min-height: 1.5em;
-    }
-
-    /* Ruler styles */
-    .ruler-container {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      background: rgba(0, 0, 0, 0.4);
-      overflow: hidden;
-      z-index: 2;
-      cursor: grab;
-    }
-
-    .ruler {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      display: flex;
-      align-items: flex-end;
-      user-select: none;
-      transition: none;
-    }
-
-    .tick {
-      position: relative;
-      width: 10px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .tick-line {
-      width: 1px;
-      background-color: white;
-    }
-
-    .tick.short .tick-line {
-      height: 10px;
-      opacity: 0.4;
-    }
-
-    .tick.medium .tick-line {
-      height: 20px;
-      opacity: 0.7;
-    }
-
-    .tick.long .tick-line {
-      height: 30px;
-      opacity: 1;
-    }
-
-    .tick-label {
-      position: absolute;
-      top: 35px;
-      font-size: 10px;
-      color: white;
-    }
+    /* (same styles as before — omitted here for brevity) */
+    /* Keep your existing style code from earlier versions */
   </style>
 </head>
 <body>
@@ -137,7 +23,7 @@
   </div>
 
   <script>
-    // Mouse blur tracking
+    // Blur follows cursor
     const blurLayer = document.getElementById('blur-layer');
     document.addEventListener('mousemove', (e) => {
       blurLayer.style.setProperty('--x', `${e.clientX}px`);
@@ -153,40 +39,30 @@
       "UI/UX Enthusiast"
     ];
     const typingElement = document.getElementById("typing");
-    let roleIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-
+    let roleIndex = 0, charIndex = 0, isDeleting = false;
     function typeEffect() {
       const current = roles[roleIndex];
-      if (isDeleting) {
-        typingElement.textContent = current.substring(0, charIndex--);
-      } else {
-        typingElement.textContent = current.substring(0, charIndex++);
-      }
-
+      typingElement.textContent = isDeleting
+        ? current.substring(0, charIndex--)
+        : current.substring(0, charIndex++);
       if (!isDeleting && charIndex === current.length + 1) {
         isDeleting = true;
         setTimeout(typeEffect, 1000);
         return;
       }
-
       if (isDeleting && charIndex === 0) {
         isDeleting = false;
         roleIndex = (roleIndex + 1) % roles.length;
       }
-
       setTimeout(typeEffect, isDeleting ? 50 : 100);
     }
-
     typeEffect();
 
-    // Build stylish ruler
+    // Build ruler
     const ruler = document.getElementById("ruler");
     for (let i = 0; i < 500; i++) {
       const tick = document.createElement("div");
       tick.className = "tick";
-
       if (i % 10 === 0) {
         tick.classList.add("long");
         const label = document.createElement("div");
@@ -198,35 +74,40 @@
       } else {
         tick.classList.add("short");
       }
-
       const line = document.createElement("div");
       line.className = "tick-line";
       tick.appendChild(line);
       ruler.appendChild(tick);
     }
 
-    // Ruler dragging
+    // Drag + redirect
     const container = document.getElementById("ruler-container");
     let isDragging = false;
     let startX = 0;
     let rulerX = 0;
+    let totalMoved = 0;
 
     container.addEventListener("mousedown", (e) => {
       isDragging = true;
       startX = e.clientX;
       rulerX = parseInt(getComputedStyle(ruler).left) || 0;
+      totalMoved = 0;
       container.style.cursor = "grabbing";
     });
 
     document.addEventListener("mousemove", (e) => {
       if (!isDragging) return;
       const dx = e.clientX - startX;
+      totalMoved = dx;
       ruler.style.left = `${rulerX + dx}px`;
     });
 
     document.addEventListener("mouseup", () => {
       isDragging = false;
       container.style.cursor = "grab";
+      if (totalMoved > 250) {
+        window.location.href = "about.html"; // 🔁 Redirect if dragged right > 250px
+      }
     });
   </script>
 </body>
