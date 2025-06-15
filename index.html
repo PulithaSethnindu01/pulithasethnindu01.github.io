@@ -12,10 +12,32 @@
       font-family: 'Montserrat', sans-serif;
       color: white;
       background: #0f172a;
-      overflow-x: hidden; /* ✅ allow scrolling */
+      overflow-x: hidden;
     }
 
-    /* Blurred background layer */
+    /* 🔵 Loading Screen */
+    #loading-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #0f172a;
+      color: #38bdf8;
+      font-size: 2rem;
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+
+    #loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* 🌌 Background Layers */
     .bg-blur {
       position: fixed;
       top: 0; left: 0;
@@ -27,15 +49,14 @@
       pointer-events: none;
     }
 
-    /* Sharp area that follows the mouse */
     .bg-clear {
       position: fixed;
       top: 0; left: 0;
       width: 100vw;
       height: 100vh;
       background: url('https://wallpapershome.com/images/pages/pic_h/26426.jpg') no-repeat center center / cover;
-      -webkit-mask-image: radial-gradient(circle 200px at var(--x, 50%) var(--y, 50%), black 0%, transparent 100%);
-      mask-image: radial-gradient(circle 500px at var(--x, 50%) var(--y, 50%), black 0%, transparent 100%);
+      -webkit-mask-image: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), black 0%, transparent 100%);
+      mask-image: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), black 0%, transparent 100%);
       mask-repeat: no-repeat;
       -webkit-mask-repeat: no-repeat;
       z-index: -1;
@@ -170,10 +191,16 @@
 </head>
 <body>
 
+  <!-- 🔄 Loading Screen -->
+  <div id="loading-screen">
+    <div id="loading-text">0%</div>
+  </div>
+
   <!-- 🌌 Background Layers -->
   <div class="bg-blur"></div>
   <div class="bg-clear" id="spotlight"></div>
 
+  <!-- 🔹 Site Content -->
   <header>
     <h1>Your Name</h1>
     <nav>
@@ -229,8 +256,9 @@
     <p>© 2025 Your Name. All rights reserved.</p>
   </footer>
 
-  <!-- 🧠 JS: Spotlight follows cursor -->
+  <!-- 🔧 JavaScript -->
   <script>
+    // 🔆 Spotlight Effect
     const spotlight = document.getElementById('spotlight');
     document.addEventListener('mousemove', e => {
       const x = e.clientX + 'px';
@@ -238,6 +266,20 @@
       spotlight.style.setProperty('--x', x);
       spotlight.style.setProperty('--y', y);
     });
+
+    // 🔄 Loading Counter Effect
+    const loadingScreen = document.getElementById('loading-screen');
+    const loadingText = document.getElementById('loading-text');
+
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress++;
+      loadingText.textContent = `${progress}%`;
+      if (progress >= 100) {
+        clearInterval(interval);
+        loadingScreen.classList.add('hidden');
+      }
+    }, 20); // 20ms × 100 steps = 2000ms = 2s
   </script>
 
 </body>
