@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Your Name | Projects</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet"/>
-  <style>
-    /* Same CSS */
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
@@ -16,35 +14,32 @@
     <nav>
       <a href="index.html">Home</a>
       <a href="about.html">About</a>
-      <a href="projects.html" style="color:#38bdf8;">Projects</a>
       <a href="contact.html">Contact</a>
     </nav>
   </header>
 
-  <section class="projects" style="padding: 80px 40px; max-width: 1000px; margin: auto; background: rgba(30, 41, 59, 0.95); border-radius: 12px;">
+  <section id="projects" class="projects">
     <h2>Projects</h2>
-
-    <div class="project" style="margin-bottom: 30px; display:flex; gap:20px; flex-wrap: wrap;">
-      <img src="https://via.placeholder.com/200x150" alt="Project 1" style="width: 200px; border-radius: 8px; flex-shrink: 0;">
-      <div class="project-content" style="flex: 1;">
+    <div class="project">
+      <img src="https://via.placeholder.com/200x150" alt="Project 1">
+      <div class="project-content">
         <h3>🔭 Project One</h3>
         <p>Description of your first project goes here.</p>
       </div>
     </div>
-
-    <div class="project" style="margin-bottom: 30px; display:flex; gap:20px; flex-wrap: wrap;">
-      <img src="https://via.placeholder.com/200x150" alt="Project 2" style="width: 200px; border-radius: 8px; flex-shrink: 0;">
-      <div class="project-content" style="flex: 1;">
+    <div class="project">
+      <img src="https://via.placeholder.com/200x150" alt="Project 2">
+      <div class="project-content">
         <h3>🌌 Project Two</h3>
         <p>Description of your second project goes here.</p>
       </div>
     </div>
-
   </section>
 
   <footer>
     <p>© 2025 Your Name. All rights reserved.</p>
   </footer>
 
+  <script src="script.js"></script>
 </body>
 </html>
