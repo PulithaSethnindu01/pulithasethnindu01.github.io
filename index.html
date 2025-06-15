@@ -22,7 +22,7 @@
       overflow-x: hidden;
     }
 
-    /* Loading Screen */
+    /* 🔄 Loading Screen */
     #loading-screen {
       position: fixed;
       top: 0; left: 0;
@@ -33,7 +33,12 @@
       align-items: center;
       justify-content: center;
       z-index: 9999;
-      /* transition removed for instant hide */
+      transition: opacity 0.5s ease;
+    }
+
+    #loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
     }
 
     .loader {
@@ -70,7 +75,7 @@
       color: #38bdf8;
     }
 
-    /* Background Layers */
+    /* 🌌 Background Layers */
     .bg-blur {
       position: fixed;
       top: 0; left: 0;
@@ -232,7 +237,7 @@
 </head>
 <body>
 
-  <!-- Loading Screen -->
+  <!-- 🔄 Loading Screen -->
   <div id="loading-screen">
     <div class="loader">
       <svg class="progress-ring" width="150" height="150">
@@ -243,7 +248,7 @@
     </div>
   </div>
 
-  <!-- Background Layers -->
+  <!-- 🌌 Background Layers -->
   <div class="bg-blur"></div>
   <div class="bg-clear" id="spotlight"></div>
 
@@ -301,9 +306,9 @@
     <p>© 2025 Your Name. All rights reserved.</p>
   </footer>
 
-  <!-- JavaScript -->
+  <!-- 🔧 JavaScript -->
   <script>
-    // Spotlight effect
+    // ✨ Spotlight effect
     const spotlight = document.getElementById('spotlight');
     document.addEventListener('mousemove', e => {
       const x = e.clientX + 'px';
@@ -312,7 +317,7 @@
       spotlight.style.setProperty('--y', y);
     });
 
-    // Circular loading progress
+    // 🌀 Circular loading progress
     const loadingScreen = document.getElementById('loading-screen');
     const loadingText = document.getElementById('loading-text');
     const progressCircle = document.querySelector('.progress-ring-circle');
@@ -335,9 +340,9 @@
       setProgress(progress);
       if (progress >= 100) {
         clearInterval(interval);
-        loadingScreen.style.display = 'none'; // Instant hide
+        loadingScreen.classList.add('hidden');
       }
-    }, 20); // 2s total (100 * 20ms)
+    }, 20); // 2s = 100 * 20ms
   </script>
 
 </body>
