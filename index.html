@@ -2,180 +2,348 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vertical Swipe Pages Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Name | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
     * {
       margin: 0; padding: 0; box-sizing: border-box;
     }
+
     html, body {
       height: 100%;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
       background: #0f172a;
       color: white;
+      overflow-x: hidden;
     }
 
-    #container {
-      position: relative;
+    /* 🔄 Loading Screen */
+    #loading-screen {
+      position: fixed;
+      top: 0; left: 0;
       width: 100vw;
       height: 100vh;
-      overflow: hidden;
-      touch-action: none;
-      transition: transform 0.5s ease;
-    }
-
-    .page {
-      position: absolute;
-      width: 100vw;
-      height: 100vh;
-      left: 0;
-      user-select: none;
+      background: #0f172a;
       display: flex;
-      justify-content: center;
       align-items: center;
-      font-size: 2rem;
-      padding: 20px;
-      box-sizing: border-box;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
     }
 
-    #page1 {
+    #loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader {
+      position: relative;
+      width: 150px;
+      height: 150px;
+    }
+
+    .progress-ring {
+      transform: rotate(-90deg);
+    }
+
+    .progress-ring-bg {
+      fill: none;
+      stroke: #1e293b;
+      stroke-width: 10;
+    }
+
+    .progress-ring-circle {
+      fill: none;
+      stroke: #38bdf8;
+      stroke-width: 10;
+      stroke-linecap: round;
+      stroke-dasharray: 440;
+      stroke-dashoffset: 440;
+      transition: stroke-dashoffset 0.2s linear;
+    }
+
+    #loading-text {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.5rem;
+      color: #38bdf8;
+    }
+
+    /* 🌌 Background Layers */
+    .bg-blur {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('https://wallpapershome.com/images/pages/pic_h/26426.jpg') no-repeat center center / cover;
+      filter: blur(12px);
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .bg-clear {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('https://wallpapershome.com/images/pages/pic_h/26426.jpg') no-repeat center center / cover;
+      -webkit-mask-image: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), black 0%, transparent 100%);
+      mask-image: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), black 0%, transparent 100%);
+      mask-repeat: no-repeat;
+      -webkit-mask-repeat: no-repeat;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Header */
+    header {
+      background: rgba(15, 23, 42, 0.95);
+      padding: 20px 40px;
+      position: sticky;
       top: 0;
-      background: url('https://wallpapershome.com/images/pages/pic_h/26426.jpg') no-repeat center center/cover;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1;
     }
-    #page2 {
-      top: 100vh;
-      background: #1e293b;
-      font-size: 1.5rem;
-      flex-direction: column;
-      text-align: center;
-      overflow-y: auto;
-      padding: 40px;
+
+    header h1 {
+      font-size: 1.5em;
+      color: #38bdf8;
+    }
+
+    nav a {
       color: #cbd5e1;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 500;
     }
-    #page3 {
-      top: 200vh;
-      background: #334155;
-      font-size: 1.5rem;
-      flex-direction: column;
+
+    nav a:hover {
+      color: #38bdf8;
+    }
+
+    section {
+      padding: 80px 40px;
+      max-width: 1000px;
+      margin: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero {
       text-align: center;
+    }
+
+    .hero img {
+      width: 150px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      border: 3px solid #38bdf8;
+    }
+
+    .hero h2 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      color: #38bdf8;
+    }
+
+    .hero p {
+      font-size: 1.2em;
+      color: #94a3b8;
+    }
+
+    .about, .projects, .contact {
+      background: rgba(30, 41, 59, 0.95);
+      margin-top: 40px;
+      border-radius: 12px;
       padding: 40px;
-      color: #cbd5e1;
     }
 
-    /* Make page2 and page3 scrollable if content overflows */
-    #page2, #page3 {
-      overflow-y: auto;
+    .about img {
+      max-width: 200px;
+      border-radius: 10px;
+      float: right;
+      margin-left: 20px;
     }
 
-    /* Scrollbar styling for pages */
-    #page2::-webkit-scrollbar, #page3::-webkit-scrollbar {
-      width: 8px;
-    }
-    #page2::-webkit-scrollbar-thumb, #page3::-webkit-scrollbar-thumb {
-      background-color: #38bdf8;
-      border-radius: 4px;
+    .projects .project {
+      margin-bottom: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
     }
 
+    .project img {
+      width: 200px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .project-content {
+      flex: 1;
+    }
+
+    .projects .project h3 {
+      margin-bottom: 10px;
+      color: #38bdf8;
+    }
+
+    form input, form textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: #fff;
+      border-radius: 6px;
+    }
+
+    form button {
+      background: #38bdf8;
+      color: #0f172a;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #94a3b8;
+      background: #0f172a;
+    }
+
+    @media (max-width: 768px) {
+      .about img, .project img {
+        float: none;
+        margin: 20px auto;
+        display: block;
+      }
+      .project {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
   </style>
 </head>
 <body>
-  <div id="container">
-    <section id="page1" class="page">
-      Swipe UP from bottom to open next page (Page 1)
-    </section>
-    <section id="page2" class="page" tabindex="0">
-      <h2>Page 2</h2>
-      <p>Here is the second page content.</p>
-      <p>Swipe up again from the bottom to go to the next page.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      <p>Scroll inside this page if needed.</p>
-      <p>More text...</p>
-      <p>More text...</p>
-    </section>
-    <section id="page3" class="page" tabindex="0">
-      <h2>Page 3</h2>
-      <p>This is the last page.</p>
-      <p>Swipe up from the bottom here will not do anything (no more pages).</p>
-      <p>You can add as many pages as you want by stacking them vertically.</p>
-    </section>
+
+  <!-- 🔄 Loading Screen -->
+  <div id="loading-screen">
+    <div class="loader">
+      <svg class="progress-ring" width="150" height="150">
+        <circle class="progress-ring-bg" cx="75" cy="75" r="70" />
+        <circle class="progress-ring-circle" cx="75" cy="75" r="70" />
+      </svg>
+      <div id="loading-text">0%</div>
+    </div>
   </div>
 
-<script>
-  (function() {
-    const container = document.getElementById('container');
-    const totalPages = 3;
-    let currentPage = 0;  // zero-based index of current page
+  <!-- 🌌 Background Layers -->
+  <div class="bg-blur"></div>
+  <div class="bg-clear" id="spotlight"></div>
 
-    let startY = 0;
-    let isSwiping = false;
-    const threshold = 50; // pixels to consider a valid swipe
+  <!-- Content -->
+  <header>
+    <h1>Your Name</h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-    function updateContainerPosition() {
-      // Move container up by currentPage * 100vh
-      container.style.transform = `translateY(${-currentPage * 100}vh)`;
+  <section class="hero">
+    <img src="https://via.placeholder.com/150" alt="Profile Image">
+    <h2>Hello, I'm Your Name</h2>
+    <p>A passionate developer & designer building web experiences.</p>
+  </section>
+
+  <section id="about" class="about">
+    <h2>About Me</h2>
+    <img src="https://via.placeholder.com/200x200" alt="About Image">
+    <p>Write a short paragraph about your background, interests, and skills.</p>
+  </section>
+
+  <section id="projects" class="projects">
+    <h2>Projects</h2>
+    <div class="project">
+      <img src="https://via.placeholder.com/200x150" alt="Project 1">
+      <div class="project-content">
+        <h3>🔭 Project One</h3>
+        <p>Description of your first project goes here.</p>
+      </div>
+    </div>
+    <div class="project">
+      <img src="https://via.placeholder.com/200x150" alt="Project 2">
+      <div class="project-content">
+        <h3>🌌 Project Two</h3>
+        <p>Description of your second project goes here.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>Contact Me</h2>
+    <form action="https://formspree.io/f/your-form-id" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required/>
+      <input type="email" name="email" placeholder="Your Email" required/>
+      <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>© 2025 Your Name. All rights reserved.</p>
+  </footer>
+
+  <!-- 🔧 JavaScript -->
+  <script>
+    // ✨ Spotlight effect
+    const spotlight = document.getElementById('spotlight');
+    document.addEventListener('mousemove', e => {
+      const x = e.clientX + 'px';
+      const y = e.clientY + 'px';
+      spotlight.style.setProperty('--x', x);
+      spotlight.style.setProperty('--y', y);
+    });
+
+    // 🌀 Circular loading progress
+    const loadingScreen = document.getElementById('loading-screen');
+    const loadingText = document.getElementById('loading-text');
+    const progressCircle = document.querySelector('.progress-ring-circle');
+
+    const radius = 70;
+    const circumference = 2 * Math.PI * radius;
+
+    progressCircle.style.strokeDasharray = ${circumference};
+    progressCircle.style.strokeDashoffset = ${circumference};
+
+    function setProgress(percent) {
+      const offset = circumference - (percent / 100) * circumference;
+      progressCircle.style.strokeDashoffset = offset;
     }
 
-    function tryGoNextPage() {
-      if (currentPage < totalPages -1) {
-        currentPage++;
-        updateContainerPosition();
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress++;
+      loadingText.textContent = ${progress}%;
+      setProgress(progress);
+      if (progress >= 100) {
+        clearInterval(interval);
+        loadingScreen.classList.add('hidden');
       }
-    }
-
-    // Touch events for mobile
-    container.addEventListener('touchstart', e => {
-      const touch = e.touches[0];
-      const windowHeight = window.innerHeight;
-      // Only start if touch starts near bottom 30px of viewport on the current page
-      if (touch.clientY > windowHeight - 30) {
-        startY = touch.clientY;
-        isSwiping = true;
-      }
-    });
-
-    container.addEventListener('touchmove', e => {
-      if (!isSwiping) return;
-      const touch = e.touches[0];
-      let deltaY = startY - touch.clientY;
-      if (deltaY > threshold) {
-        tryGoNextPage();
-        isSwiping = false;
-      }
-    });
-
-    container.addEventListener('touchend', () => {
-      isSwiping = false;
-    });
-
-    // Pointer events for mouse / desktop
-    container.addEventListener('pointerdown', e => {
-      const windowHeight = window.innerHeight;
-      if (e.clientY > windowHeight - 30) {
-        startY = e.clientY;
-        isSwiping = true;
-      }
-    });
-
-    container.addEventListener('pointermove', e => {
-      if (!isSwiping) return;
-      let deltaY = startY - e.clientY;
-      if (deltaY > threshold) {
-        tryGoNextPage();
-        isSwiping = false;
-      }
-    });
-
-    container.addEventListener('pointerup', () => {
-      isSwiping = false;
-    });
-
-    container.addEventListener('pointercancel', () => {
-      isSwiping = false;
-    });
-
-  })();
-</script>
+    }, 20); // 2s = 100 * 20ms
+  </script>
 
 </body>
 </html>
