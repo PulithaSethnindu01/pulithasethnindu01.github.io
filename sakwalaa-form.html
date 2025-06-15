@@ -2,94 +2,388 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sakwalaa Registration</title>
+  <title>Sakwala Registration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Azonix&display=swap" rel="stylesheet" />
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #0b0c1b;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body, html {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+      color: white;
+      background:
+        linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+        url("sakwalabg.jpg") no-repeat center center fixed;
+      background-size: cover;
+      animation: zoomBackground 20s ease-in-out infinite;
+    }
+
+    @keyframes zoomBackground {
+      0%, 100% {
+        background-size: 105% auto;
+      }
+      50% {
+        background-size: 100% auto;
+      }
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: transparent;
+      box-shadow:
+        10px 20px 1px white,
+        100px 150px 1.5px white,
+        300px 200px 1.2px white,
+        500px 400px 1.3px white,
+        700px 100px 1.1px white,
+        900px 300px 1.4px white;
+      animation: twinkle 3s infinite alternate;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.5; }
+      to { opacity: 1; }
     }
 
     .form-container {
-      background-color: #16182a;
-      padding: 30px 40px;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      width: 100%;
-      max-width: 400px;
+      position: relative;
+      z-index: 1;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 15px 25px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      width: 90%;
+      max-width: 320px;
+      margin: 5vh auto;
+      backdrop-filter: blur(10px);
+      color: white;
     }
 
-    .form-container h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 1.8em;
-      color: #00ffe5;
+    @media (max-width: 360px) {
+      .form-container {
+        max-width: 280px;
+        padding: 12px 20px;
+        margin: 3vh auto;
+      }
+      .logo {
+        width: 100px;
+      }
     }
 
-    label {
+    .logo {
       display: block;
-      margin-bottom: 8px;
+      margin: 0 auto 10px;
+      width: 120px;
+      height: auto;
+    }
+
+    h1 {
+      font-family: 'Azonix', monospace;
+      text-align: center;
+      margin-bottom: 10px;
+      color: white;
+    }
+
+    .description {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 0.9rem;
+      opacity: 0.8;
       font-weight: 500;
+      line-height: 1.4;
     }
 
-    input[type="text"],
-    input[type="email"] {
-      width: 100%;
-      padding: 10px 12px;
-      margin-bottom: 20px;
-      border: none;
-      border-radius: 8px;
-      background-color: #23263a;
-      color: #ffffff;
-      font-size: 1em;
-    }
-
-    input[type="submit"] {
+    select, input {
       width: 100%;
       padding: 12px;
+      margin: 10px 0;
       border: none;
       border-radius: 8px;
-      background-color: #00ffe5;
-      color: #000000;
-      font-size: 1em;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      font-size: 1rem;
+      font-family: 'Segoe UI', sans-serif;
     }
 
-    input[type="submit"]:hover {
-      background-color: #00cfc2;
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'14'%20height%3D'10'%20viewBox%3D'0%200%2014%2010'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M7%207l5-5H2z'%20fill%3D'%23fff'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 14px 10px;
+      cursor: pointer;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    ::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px solid #00d2ff;
+      box-shadow: 0 0 5px #00d2ff;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #00d2ff;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    button:hover:not(:disabled) {
+      background-color: #00b6e6;
+    }
+
+    button:disabled {
+      background-color: #66d9ff;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid #fff;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #shootingStarsCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .popup {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: -320px;
+      padding: 16px 24px;
+      background-color: rgba(30, 30, 30, 0.95);
+      color: white;
+      border-left: 5px solid #00ff88;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      z-index: 9999;
+      transition: right 0.5s ease;
+      max-width: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .popup.show {
+      right: 20px;
+    }
+
+    .popup.error { border-left-color: #ff4f4f; }
+    .popup.success { border-left-color: #00ff88; }
+
+    .popup .close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <div class="form-container">
-    <h2>Join Sakwalaa</h2>
-    <form id="myForm">
-      <label for="name">Your Name:</label>
-      <input type="text" id="name" name="name" required>
+<canvas id="shootingStarsCanvas"></canvas>
 
-      <label for="email">Your Email:</label>
-      <input type="email" id="email" name="email" required>
+<div class="form-container">
+  <img src="sakwalalogo.png" alt="Sakwala Logo" class="logo" />
+  <h1>Sakwala Registration</h1>
+  <p class="description">
+    Sakwala '25 Cyberspace; Intra-School Astronomy Lecture Series is the Ultimate Cosmic Odyssey organized by the Anandian Astronomical Association.
+  </p>
 
-      <input type="submit" value="Submit">
-    </form>
-  </div>
+  <form id="sakwalaForm">
+    <input type="text" name="name" placeholder="Your Name" required />
+    <select name="grade" required>
+      <option value="" disabled selected hidden>Grade</option>
+      <option value="Grade 6">Grade 6</option>
+      <option value="Grade 7">Grade 7</option>
+      <option value="Grade 8">Grade 8</option>
+      <option value="Grade 9">Grade 9</option>
+      <option value="Grade 10">Grade 10</option>
+      <option value="Grade 11">Grade 11</option>
+      <option value="Post O/L">Post O/L</option>
+    </select>
+    <input type="email" name="email" placeholder="Your Email" required />
+    <input type="tel" name="phone" placeholder="Phone Number" required pattern="[0-9]{7,15}" />
+    <button type="submit" id="submitBtn">
+      <span id="submitText">Submit</span>
+      <span id="spinner" class="spinner" style="display: none;"></span>
+    </button>
+  </form>
+</div>
 
-  <script>
-    document.getElementById("myForm").addEventListener("submit", function(e){
-      e.preventDefault(); // Prevent actual form submission
-      // Optional: You can save data here via backend/API if needed
-      window.location.href = "https://astroananda.com/sakwalaa"; // Redirect
+<!-- Popups -->
+<div id="popup-success" class="popup success">
+  ✅ Successfully submitted!
+  <button class="close-btn" onclick="hidePopup('popup-success')">✖</button>
+</div>
+
+<div id="popup-error" class="popup error">
+  ❌ Submission failed!
+  <button class="close-btn" onclick="hidePopup('popup-error')">✖</button>
+</div>
+
+<script>
+  // Shooting Stars
+  const canvas = document.getElementById('shootingStarsCanvas');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  class ShootingStar {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height / 2;
+      this.length = 100 + Math.random() * 100;
+      this.speed = 10 + Math.random() * 10;
+      this.size = 1 + Math.random();
+      this.opacity = 0.8 + Math.random() * 0.2;
+      this.angle = Math.PI / 4;
+      this.dx = Math.cos(this.angle) * this.speed;
+      this.dy = Math.sin(this.angle) * this.speed;
+      this.life = 0;
+      this.maxLife = 80 + Math.random() * 60;
+      this.active = false;
+      this.waitTime = Math.random() * 300;
+    }
+    update() {
+      if (!this.active) {
+        this.waitTime--;
+        if (this.waitTime <= 0) this.active = true;
+        else return;
+      }
+      this.x += this.dx;
+      this.y += this.dy;
+      this.life++;
+      if (this.life > this.maxLife) this.reset();
+    }
+    draw() {
+      if (!this.active) return;
+      ctx.strokeStyle = 'rgba(255,255,255,' + this.opacity + ')';
+      ctx.lineWidth = this.size;
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.y);
+      ctx.lineTo(this.x - this.dx * this.length / this.speed, this.y - this.dy * this.length / this.speed);
+      ctx.stroke();
+    }
+  }
+
+  const stars = Array.from({length: 6}, () => new ShootingStar());
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    stars.forEach(star => { star.update(); star.draw(); });
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  // Form Submission
+  const form = document.getElementById('sakwalaForm');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const data = new FormData(form);
+
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+    const spinner = document.getElementById('spinner');
+
+    // Disable submit button immediately
+    submitBtn.disabled = true;
+
+    submitText.style.display = 'none';
+    spinner.style.display = 'inline-block';
+
+    fetch('https://script.google.com/macros/s/AKfycbyjMKu8DOgt72ybO9HgAdPKyl0_btT-hgU50NvTVITU7epBpkTF_rPoDzod3LcY_CPzWg/exec', {
+      method: 'POST',
+      mode: 'no-cors',
+      body: data
+    })
+    .then(() => {
+      form.reset();
+      showPopup('popup-success');
+    })
+    .catch(() => {
+      showPopup('popup-error');
+    })
+    .finally(() => {
+      submitText.style.display = 'inline';
+      spinner.style.display = 'none';
+
+      // Re-enable the submit button after 3 seconds
+      setTimeout(() => {
+        submitBtn.disabled = false;
+      }, 3000);
     });
-  </script>
+  });
+
+  function showPopup(id) {
+    const popup = document.getElementById(id);
+    popup.style.display = 'flex';
+    popup.classList.add("show");
+    setTimeout(() => {
+      popup.classList.remove("show");
+      popup.style.display = 'none';
+    }, 3000);
+  }
+
+  function hidePopup(id) {
+    const popup = document.getElementById(id);
+    popup.classList.remove("show");
+    popup.style.display = 'none';
+  }
+</script>
 
 </body>
 </html>
