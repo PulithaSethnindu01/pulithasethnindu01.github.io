@@ -50,14 +50,13 @@
       max-width: 800px;
       padding: 40px 20px;
       text-align: center;
-      transition: transform 0.5s ease;
+      transition: opacity 0.5s ease;
       left: 0; top: 50%;
       transform: translateY(-50%);
     }
     .hidden {
       pointer-events: none;
       opacity: 0;
-      transition: opacity 0.5s ease;
     }
     .visible {
       pointer-events: auto;
@@ -109,6 +108,7 @@
       display: flex;
       align-items: flex-end;
       transition: none;
+      user-select: none;
     }
     .tick {
       position: relative;
@@ -161,7 +161,7 @@
     </section>
   </div>
 
-  <div class="ruler-container" id="ruler-container">
+  <div class="ruler-container" id="ruler-container" aria-label="Workspace switcher ruler" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0">
     <div class="ruler" id="ruler"></div>
   </div>
 
@@ -186,19 +186,21 @@
 
     function typeEffect() {
       const current = roles[roleIndex];
-      typingElement.textContent = isDeleting
-        ? current.substring(0, charIndex--)
-        : current.substring(0, charIndex++);
-      if (!isDeleting && charIndex === current.length + 1) {
-        isDeleting = true;
-        setTimeout(typeEffect, 1000);
-        return;
+      if (!isDeleting) {
+        typingElement.textContent = current.substring(0, charIndex++);
+        if (charIndex > current.length) {
+          isDeleting = true;
+          setTimeout(typeEffect, 1200);
+          return;
+        }
+      } else {
+        typingElement.textContent = current.substring(0, charIndex--);
+        if (charIndex < 0) {
+          isDeleting = false;
+          roleIndex = (roleIndex + 1) % roles.length;
+        }
       }
-      if (isDeleting && charIndex === 0) {
-        isDeleting = false;
-        roleIndex = (roleIndex + 1) % roles.length;
-      }
-      setTimeout(typeEffect, isDeleting ? 50 : 100);
+      setTimeout(typeEffect, isDeleting ? 50 : 120);
     }
     typeEffect();
 
@@ -230,19 +232,24 @@
     const aboutSection = document.getElementById("about");
     let isDragging = false;
     let startX = 0;
-    let rulerX = 0;
+    let rulerStartLeft = 0;
     let totalMoved = 0;
 
     // Current view: 'home' or 'about'
     let currentView = 'home';
 
-    // Max drag before switch (5 long ticks approx)
+    // Max drag before switch (5 long ticks approx = 50px * 5 = 250px)
     const DRAG_THRESHOLD = 250;
+
+    // Limit max drag left and right (container width: 100vw, ruler width: 500 * 10px = 5000px)
+    // So max left drag: -(ruler width - container width)
+    const containerWidth = container.clientWidth;
+    const rulerWidth = 500 * 10;
 
     container.addEventListener("mousedown", (e) => {
       isDragging = true;
       startX = e.clientX;
-      rulerX = parseInt(getComputedStyle(ruler).left) || 0;
+      rulerStartLeft = parseInt(getComputedStyle(ruler).left) || 0;
       totalMoved = 0;
       container.style.cursor = "grabbing";
     });
@@ -251,15 +258,13 @@
       if (!isDragging) return;
       const dx = e.clientX - startX;
       totalMoved = dx;
-      // Limit ruler drag so it doesn't go infinite left/right
-      if (rulerX + dx > 0) {
-        ruler.style.left = '0px';
-      } else if (rulerX + dx < -4900) {
-        // prevent too far left, assuming 500*10 px total width
-        ruler.style.left = '-4900px';
-      } else {
-        ruler.style.left = `${rulerX + dx}px`;
-      }
+      let newLeft = rulerStartLeft + dx;
+
+      // Clamp newLeft between max right (0) and max left drag
+      if (newLeft > 0) newLeft = 0;
+      if (newLeft < containerWidth - rulerWidth) newLeft = containerWidth - rulerWidth;
+
+      ruler.style.left = newLeft + "px";
     });
 
     document.addEventListener("mouseup", () => {
