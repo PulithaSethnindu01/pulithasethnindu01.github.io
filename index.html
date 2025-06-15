@@ -84,15 +84,22 @@
       cursor: grab;
     }
 
+    .ruler-wrapper {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
     .ruler {
       position: absolute;
       top: 0;
-      left: 0;
-      height: 100%;
+      left: 50%;
       display: flex;
       align-items: flex-end;
       user-select: none;
-      transition: none;
+      transform: translateX(calc(-50% + 250px));
+      transition: transform 0.5s ease;
     }
 
     .tick {
@@ -132,18 +139,18 @@
   </div>
 
   <div class="ruler-container" id="ruler-container">
-    <div class="ruler" id="ruler"></div>
+    <div class="ruler-wrapper">
+      <div class="ruler" id="ruler"></div>
+    </div>
   </div>
 
   <script>
-    // Blur follows mouse
     const blurLayer = document.getElementById('blur-layer');
     document.addEventListener('mousemove', (e) => {
       blurLayer.style.setProperty('--x', `${e.clientX}px`);
       blurLayer.style.setProperty('--y', `${e.clientY}px`);
     });
 
-    // Typing animation
     const roles = ["Graphic Designer", "Web Developer", "Creative Thinker", "Tech Explorer", "UI/UX Enthusiast"];
     const typingElement = document.getElementById("typing");
     let roleIndex = 0, charIndex = 0, isDeleting = false, typingPaused = false;
@@ -167,7 +174,6 @@
     }
     typeEffect();
 
-    // Build ruler
     const ruler = document.getElementById("ruler");
     for (let i = 0; i < 500; i++) {
       const tick = document.createElement("div");
@@ -189,47 +195,61 @@
       ruler.appendChild(tick);
     }
 
-    // Drag interactions (left/right to switch content)
     const container = document.getElementById("ruler-container");
     let isDragging = false;
     let startX = 0;
-    let rulerX = 0;
-    let totalMoved = 0;
+    let deltaX = 0;
     let inAbout = false;
+
+    // ✅ Start ruler at +250px (Home)
+    ruler.style.transform = `translateX(calc(-50% + 250px))`;
 
     container.addEventListener("mousedown", (e) => {
       isDragging = true;
       startX = e.clientX;
-      rulerX = parseInt(getComputedStyle(ruler).left) || 0;
-      totalMoved = 0;
+      deltaX = 0;
+      ruler.style.transition = "none";
       container.style.cursor = "grabbing";
     });
 
     document.addEventListener("mousemove", (e) => {
       if (!isDragging) return;
-      const dx = e.clientX - startX;
-      totalMoved = dx;
-      ruler.style.left = `${rulerX + dx}px`;
+      deltaX = e.clientX - startX;
+      ruler.style.transform = inAbout
+        ? `translateX(calc(-50% - 300px + ${deltaX}px))`
+        : `translateX(calc(-50% + 250px + ${deltaX}px))`;
     });
 
     document.addEventListener("mouseup", () => {
+      if (!isDragging) return;
       isDragging = false;
       container.style.cursor = "grab";
-      if (!inAbout && totalMoved < -250) {
-        // Switch to About section
+      ruler.style.transition = "transform 0.5s ease";
+
+      if (!inAbout && deltaX < -250) {
+        // Switch to About
+        ruler.style.transform = `translateX(calc(-50% - 300px))`;
         document.getElementById("main-title").textContent = "About Me";
         document.getElementById("typing").style.display = "none";
         document.getElementById("about-text").style.display = "block";
         typingPaused = true;
         inAbout = true;
-      } else if (inAbout && totalMoved > 250) {
+      } else if (inAbout && deltaX > 200) {
         // Switch back to Home
+        ruler.style.transform = `translateX(calc(-50% + 250px))`;
         document.getElementById("main-title").textContent = "Pulitha Sethnindu";
         document.getElementById("typing").style.display = "block";
         document.getElementById("about-text").style.display = "none";
         typingPaused = false;
-        typeEffect(); // resume
+        typeEffect();
         inAbout = false;
+      } else {
+        // Stay in current view
+        if (inAbout) {
+          ruler.style.transform = `translateX(calc(-50% - 300px))`;
+        } else {
+          ruler.style.transform = `translateX(calc(-50% + 250px))`;
+        }
       }
     });
   </script>
