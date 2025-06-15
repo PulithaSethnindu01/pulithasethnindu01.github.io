@@ -34,7 +34,7 @@
       z-index: -1;
       pointer-events: none;
       mask: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
-      -webkit-mask: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
+      -webkit-mask: radial-gradient(circle 250px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
       transition: mask 0.2s ease, -webkit-mask 0.2s ease;
     }
 
@@ -124,6 +124,24 @@
       font-size: 10px;
       color: white;
     }
+
+    /* Added style for drag label */
+    #drag-label {
+      position: fixed;
+      pointer-events: none;
+      color: white;
+      font-weight: bold;
+      background: rgba(0,0,0,0.6);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 12px;
+      user-select: none;
+      z-index: 10;
+      transform: translate(-50%, -150%);
+      white-space: nowrap;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -143,6 +161,9 @@
       <div class="ruler" id="ruler"></div>
     </div>
   </div>
+
+  <!-- Drag label -->
+  <div id="drag-label">drag</div>
 
   <script>
     const blurLayer = document.getElementById('blur-layer');
@@ -180,10 +201,7 @@
       tick.className = "tick";
       if (i % 10 === 0) {
         tick.classList.add("long");
-        const label = document.createElement("div");
-        label.className = "tick-label";
-        label.textContent = i;
-        tick.appendChild(label);
+        // Numbers removed here - no label created or appended
       } else if (i % 5 === 0) {
         tick.classList.add("medium");
       } else {
@@ -251,6 +269,22 @@
           ruler.style.transform = `translateX(calc(-50% + 250px))`;
         }
       }
+    });
+
+    // New: Show 'drag' label on hover over ruler container
+    const dragLabel = document.getElementById('drag-label');
+
+    container.addEventListener('mouseenter', () => {
+      dragLabel.style.display = 'block';
+    });
+
+    container.addEventListener('mouseleave', () => {
+      dragLabel.style.display = 'none';
+    });
+
+    container.addEventListener('mousemove', (e) => {
+      dragLabel.style.left = `${e.clientX}px`;
+      dragLabel.style.top = `${e.clientY}px`;
     });
   </script>
 </body>
