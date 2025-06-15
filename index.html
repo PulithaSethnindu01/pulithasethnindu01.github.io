@@ -13,28 +13,34 @@
       overflow: hidden;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       cursor: default;
-      background: #000;
       color: white;
       user-select: none;
+      background: black;
     }
-    .background {
+
+    /* Background layers */
+    .background-blur, .background-clear {
       position: fixed;
-      width: 100%;
-      height: 100%;
-      background: url('https://wallpapershome.com/images/pages/pic_h/26426.jpg') no-repeat center center/cover;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      pointer-events: none;
       z-index: -2;
     }
-    .blur-layer {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      backdrop-filter: blur(12px);
-      z-index: -1;
-      pointer-events: none;
-      mask: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
-      -webkit-mask: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
-      transition: mask 0.2s ease, -webkit-mask 0.2s ease;
+    .background-blur {
+      filter: blur(12px);
+      background-image: url('https://wallpapershome.com/images/pages/pic_h/26426.jpg');
     }
+    .background-clear {
+      background-image: url('https://wallpapershome.com/images/pages/pic_h/26426.jpg');
+      mask-image: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
+      -webkit-mask-image: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
+      transition: mask-image 0.2s ease;
+    }
+
+    /* Container for content */
     .container {
       position: relative;
       height: 100%;
@@ -46,6 +52,8 @@
       text-align: center;
       padding: 0 20px;
     }
+
+    /* Workspace (home/about) */
     .workspace {
       position: absolute;
       width: 100%;
@@ -55,6 +63,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       transition: opacity 0.5s ease;
+      user-select: text;
     }
     .hidden {
       pointer-events: none;
@@ -65,12 +74,12 @@
       opacity: 1;
     }
 
+    /* Headings and paragraphs */
     h1 {
       font-size: 3em;
       margin-bottom: 0.3em;
       text-shadow: 0 0 10px rgba(0,0,0,0.7);
     }
-
     p {
       font-size: 1.2em;
       line-height: 1.5;
@@ -89,7 +98,8 @@
       border-right: 2px solid white;
       line-height: 1.5em;
       display: inline-block;
-      vertical-align: bottom; /* align blinking cursor baseline */
+      vertical-align: bottom;
+      font-family: monospace, monospace;
     }
 
     /* Ruler styles */
@@ -113,8 +123,8 @@
       display: flex;
       align-items: flex-end;
       user-select: none;
-      transition: none;
       will-change: left;
+      transition: none;
     }
     .tick {
       position: relative;
@@ -151,18 +161,18 @@
   </style>
 </head>
 <body>
-  <div class="background"></div>
-  <div class="blur-layer" id="blur-layer"></div>
+  <div class="background-blur"></div>
+  <div class="background-clear"></div>
 
   <div class="container">
     <!-- Home workspace -->
-    <section id="home" class="workspace visible">
+    <section id="home" class="workspace visible" aria-label="Home workspace">
       <h1>Pulitha Sethnindu</h1>
-      <div class="typing" id="typing"></div>
+      <div class="typing" id="typing" aria-live="polite" aria-atomic="true"></div>
     </section>
 
     <!-- About Me workspace -->
-    <section id="about" class="workspace hidden">
+    <section id="about" class="workspace hidden" aria-label="About me workspace">
       <h1>About Me</h1>
       <p>
         I'm Pulitha Sethnindu, a passionate graphic designer and web developer. With a love for visual storytelling and functional design, I blend creativity with clean code to build engaging digital experiences. Whether it's UI/UX, animation, or frontend magic, I love turning ideas into reality.
@@ -171,18 +181,18 @@
   </div>
 
   <div class="ruler-container" id="ruler-container" aria-label="Workspace switcher ruler" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0">
-    <div class="ruler" id="ruler"></div>
+    <div class="ruler" id="ruler" aria-hidden="true"></div>
   </div>
 
   <script>
-    // Unblur on mouse move
-    const blurLayer = document.getElementById('blur-layer');
-    document.addEventListener('mousemove', (e) => {
-      blurLayer.style.setProperty('--x', `${e.clientX}px`);
-      blurLayer.style.setProperty('--y', `${e.clientY}px`);
+    // Background clear circle following cursor
+    const bgClear = document.querySelector('.background-clear');
+    document.addEventListener('mousemove', e => {
+      bgClear.style.setProperty('--x', `${e.clientX}px`);
+      bgClear.style.setProperty('--y', `${e.clientY}px`);
     });
 
-    // Typing animation for home section
+    // Typing animation
     const roles = [
       "Graphic Designer",
       "Web Developer",
@@ -213,7 +223,7 @@
     }
     typeEffect();
 
-    // Build ruler with ticks
+    // Build ruler ticks
     const ruler = document.getElementById("ruler");
     for (let i = 0; i < 500; i++) {
       const tick = document.createElement("div");
@@ -235,7 +245,7 @@
       ruler.appendChild(tick);
     }
 
-    // Dragging logic for switching workspace
+    // Drag logic for switching workspaces
     const container = document.getElementById("ruler-container");
     const homeSection = document.getElementById("home");
     const aboutSection = document.getElementById("about");
@@ -244,17 +254,13 @@
     let rulerStartLeft = 0;
     let totalMoved = 0;
 
-    // Current view: 'home' or 'about'
     let currentView = 'home';
-
-    // Max drag before switch (5 long ticks approx = 50px * 5 = 250px)
     const DRAG_THRESHOLD = 250;
 
-    // Calculated widths for dragging limits
     let containerWidth = container.clientWidth;
-    let rulerWidth = 500 * 10;
+    let rulerWidth = 500 * 10; // 500 ticks * 10px each
 
-    // Allow small right drag margin (for Back to Home) up to 100px right drag
+    // Allow small right drag margin for "Back to Home" effect
     const MAX_RIGHT_DRAG = 100;
 
     container.addEventListener("mousedown", (e) => {
@@ -272,7 +278,6 @@
       totalMoved = dx;
       let newLeft = rulerStartLeft + dx;
 
-      // Clamp newLeft between max right drag and max left drag
       if (newLeft > MAX_RIGHT_DRAG) newLeft = MAX_RIGHT_DRAG;
       if (newLeft < containerWidth - rulerWidth) newLeft = containerWidth - rulerWidth;
 
@@ -285,10 +290,10 @@
       container.style.cursor = "grab";
 
       if (currentView === 'home' && totalMoved < -DRAG_THRESHOLD) {
-        // dragged left → switch to about
+        // dragged left → about
         switchToAbout();
       } else if (currentView === 'about' && totalMoved > DRAG_THRESHOLD) {
-        // dragged right → switch to home
+        // dragged right → home
         switchToHome();
       }
 
@@ -316,7 +321,7 @@
       homeSection.classList.remove('hidden');
     }
 
-    // Update widths on window resize (optional)
+    // Update container width on resize
     window.addEventListener('resize', () => {
       containerWidth = container.clientWidth;
     });
