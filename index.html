@@ -15,10 +15,7 @@
       height: 100%;
       overflow: hidden;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    body {
-      position: relative;
+      cursor: none; /* Hide default cursor for better effect */
     }
 
     .background {
@@ -26,24 +23,19 @@
       width: 100%;
       height: 100%;
       background: url('https://wallpapershome.com/images/pages/pic_h/26426.jpg') no-repeat center center/cover;
-      filter: blur(12px);
-      z-index: -1;
+      z-index: -2;
     }
 
-    .hover-reveal {
+    .blur-layer {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 150px;
-      height: 150px;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(12px);
+      z-index: -1;
       pointer-events: none;
-      border-radius: 50%;
-      z-index: 1;
-      background: url('https://wallpapershome.com/images/pages/pic_h/26426.jpg') no-repeat center center/cover;
-      mix-blend-mode: normal;
-      transition: transform 0.1s ease;
-      mask-image: radial-gradient(circle, rgba(0,0,0,1) 50%, transparent 100%);
-      -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 50%, transparent 100%);
+      mask: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
+      -webkit-mask: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
+      transition: mask 0.2s ease, -webkit-mask 0.2s ease;
     }
 
     .content {
@@ -53,36 +45,38 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      z-index: 2;
+      z-index: 1;
       color: white;
+      text-align: center;
       text-shadow: 0 0 10px rgba(0,0,0,0.7);
+      pointer-events: none;
     }
 
     h1 {
       font-size: 3em;
-      margin-bottom: 0.2em;
+      margin-bottom: 0.3em;
     }
 
     p {
       font-size: 1.2em;
       max-width: 80%;
-      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="background"></div>
-  <div class="hover-reveal" id="reveal"></div>
+  <div class="blur-layer" id="blur-layer"></div>
 
   <div class="content">
     <h1>Pulitha Sethnindu</h1>
-    <p>Creative Developer | Designer | Tech Enthusiast</p>
+    <p>Creative Developer | Designer | Tech Explorer</p>
   </div>
 
   <script>
-    const reveal = document.getElementById('reveal');
+    const blurLayer = document.getElementById('blur-layer');
     document.addEventListener('mousemove', (e) => {
-      reveal.style.transform = `translate(${e.clientX - 75}px, ${e.clientY - 75}px)`;
+      blurLayer.style.setProperty('--x', `${e.clientX}px`);
+      blurLayer.style.setProperty('--y', `${e.clientY}px`);
     });
   </script>
 </body>
