@@ -43,16 +43,18 @@
       justify-content: center;
       align-items: center;
       overflow: hidden;
+      text-align: center;
+      padding: 0 20px;
     }
     .workspace {
       position: absolute;
       width: 100%;
-      max-width: 800px;
-      padding: 40px 20px;
-      text-align: center;
+      max-width: 700px;
+      padding: 20px 40px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       transition: opacity 0.5s ease;
-      left: 0; top: 50%;
-      transform: translateY(-50%);
     }
     .hidden {
       pointer-events: none;
@@ -79,12 +81,15 @@
     /* Typing effect */
     .typing {
       font-size: 1.3em;
-      border-right: 2px solid white;
       white-space: nowrap;
       overflow: hidden;
       min-height: 1.5em;
       margin-top: 15px;
       text-shadow: 0 0 6px rgba(0,0,0,0.7);
+      border-right: 2px solid white;
+      line-height: 1.5em;
+      display: inline-block;
+      vertical-align: bottom; /* align blinking cursor baseline */
     }
 
     /* Ruler styles */
@@ -107,14 +112,16 @@
       height: 100%;
       display: flex;
       align-items: flex-end;
-      transition: none;
       user-select: none;
+      transition: none;
+      will-change: left;
     }
     .tick {
       position: relative;
       width: 10px;
       display: flex;
       justify-content: center;
+      flex-shrink: 0;
     }
     .tick-line {
       width: 1px;
@@ -138,6 +145,8 @@
       font-size: 10px;
       color: white;
       user-select: none;
+      left: 50%;
+      transform: translateX(-50%);
     }
   </style>
 </head>
@@ -153,7 +162,7 @@
     </section>
 
     <!-- About Me workspace -->
-    <section id="about" class="workspace hidden" style="max-width:700px;">
+    <section id="about" class="workspace hidden">
       <h1>About Me</h1>
       <p>
         I'm Pulitha Sethnindu, a passionate graphic designer and web developer. With a love for visual storytelling and functional design, I blend creativity with clean code to build engaging digital experiences. Whether it's UI/UX, animation, or frontend magic, I love turning ideas into reality.
@@ -241,10 +250,12 @@
     // Max drag before switch (5 long ticks approx = 50px * 5 = 250px)
     const DRAG_THRESHOLD = 250;
 
-    // Limit max drag left and right (container width: 100vw, ruler width: 500 * 10px = 5000px)
-    // So max left drag: -(ruler width - container width)
-    const containerWidth = container.clientWidth;
-    const rulerWidth = 500 * 10;
+    // Calculated widths for dragging limits
+    let containerWidth = container.clientWidth;
+    let rulerWidth = 500 * 10;
+
+    // Allow small right drag margin (for Back to Home) up to 100px right drag
+    const MAX_RIGHT_DRAG = 100;
 
     container.addEventListener("mousedown", (e) => {
       isDragging = true;
@@ -252,6 +263,7 @@
       rulerStartLeft = parseInt(getComputedStyle(ruler).left) || 0;
       totalMoved = 0;
       container.style.cursor = "grabbing";
+      e.preventDefault();
     });
 
     document.addEventListener("mousemove", (e) => {
@@ -260,8 +272,8 @@
       totalMoved = dx;
       let newLeft = rulerStartLeft + dx;
 
-      // Clamp newLeft between max right (0) and max left drag
-      if (newLeft > 0) newLeft = 0;
+      // Clamp newLeft between max right drag and max left drag
+      if (newLeft > MAX_RIGHT_DRAG) newLeft = MAX_RIGHT_DRAG;
       if (newLeft < containerWidth - rulerWidth) newLeft = containerWidth - rulerWidth;
 
       ruler.style.left = newLeft + "px";
@@ -303,6 +315,11 @@
       homeSection.classList.add('visible');
       homeSection.classList.remove('hidden');
     }
+
+    // Update widths on window resize (optional)
+    window.addEventListener('resize', () => {
+      containerWidth = container.clientWidth;
+    });
   </script>
 </body>
 </html>
