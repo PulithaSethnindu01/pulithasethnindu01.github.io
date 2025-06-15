@@ -1,104 +1,191 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mathijs Hanenkamp Photography</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Name | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.6;
+      color: #fff;
+      background: #0f172a;
+      scroll-behavior: smooth;
+    }
+    header {
+      background: #1e293b;
+      padding: 20px 40px;
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+    header h1 { font-size: 1.5em; color: #38bdf8; }
+    nav a {
+      color: #cbd5e1;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 500;
+    }
+    nav a:hover { color: #38bdf8; }
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display&display=swap" rel="stylesheet" />
-  
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="styles.css" />
-  
+    section {
+      padding: 80px 40px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .hero {
+      text-align: center;
+    }
+    .hero img {
+      width: 150px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      border: 3px solid #38bdf8;
+    }
+    .hero h2 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      color: #38bdf8;
+    }
+    .hero p {
+      font-size: 1.2em;
+      color: #94a3b8;
+    }
+
+    .about, .projects, .contact {
+      background: #1e293b;
+      margin-top: 40px;
+      border-radius: 12px;
+      padding: 40px;
+    }
+
+    .about img {
+      max-width: 200px;
+      border-radius: 10px;
+      float: right;
+      margin-left: 20px;
+    }
+
+    .projects .project {
+      margin-bottom: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .project img {
+      width: 200px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .project-content {
+      flex: 1;
+    }
+
+    .projects .project h3 {
+      margin-bottom: 10px;
+      color: #38bdf8;
+    }
+
+    form input, form textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      background: #0f172a;
+      border: 1px solid #334155;
+      color: #fff;
+      border-radius: 6px;
+    }
+
+    form button {
+      background: #38bdf8;
+      color: #0f172a;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #94a3b8;
+      background: #0f172a;
+    }
+
+    @media (max-width: 768px) {
+      .about img, .project img { float: none; margin: 20px auto; display: block; }
+      .project { flex-direction: column; align-items: center; }
+    }
+  </style>
 </head>
 <body>
 
-  <header id="header">
-    <div class="container">
-      <h1 class="logo">Mathijs Hanenkamp</h1>
-      <nav>
-        <ul class="nav-links">
-          <li><a href="#portfolio">Portfolio</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
+  <header>
+    <h1>Your Name</h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
   </header>
 
   <section class="hero">
-    <div class="container hero-content">
-      <h2 class="hero-title">Portrait & Documentary Photographer</h2>
-      <p class="hero-subtitle">Creating visual legacies for brands, companies, and people. Based in Nijmegen, The Netherlands.</p>
-      <a href="#portfolio" class="btn">View Portfolio</a>
-    </div>
-    <canvas id="hero-canvas"></canvas>
+    <img src="https://via.placeholder.com/150" alt="Profile Image">
+    <h2>Hello, I'm Your Name</h2>
+    <p>A passionate developer & designer building web experiences.</p>
   </section>
 
-  <section id="portfolio" class="portfolio-section">
-    <div class="container">
-      <h2 class="section-title">Portfolio</h2>
-      <div class="gallery">
-        <!-- Gallery items -->
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="Photo 1" />
-          <div class="caption">Urban portrait</div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=600&q=80" alt="Photo 2" />
-          <div class="caption">Documentary shot</div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=600&q=80" alt="Photo 3" />
-          <div class="caption">Black & White Portrait</div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1468071174046-657d9d351a40?auto=format&fit=crop&w=600&q=80" alt="Photo 4" />
-          <div class="caption">Street life</div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=600&q=80" alt="Photo 5" />
-          <div class="caption">Candid moment</div>
-        </div>
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1504203701135-0c27bce60792?auto=format&fit=crop&w=600&q=80" alt="Photo 6" />
-          <div class="caption">Natural light portrait</div>
-        </div>
+  <section id="about" class="about">
+    <h2>About Me</h2>
+    <img src="https://via.placeholder.com/200x200" alt="About Image">
+    <p>
+      Write a short paragraph about your background, interests, and skills.
+      Mention your education, hobbies, and any cool projects or tech you enjoy.
+    </p>
+  </section>
+
+  <section id="projects" class="projects">
+    <h2>Projects</h2>
+
+    <div class="project">
+      <img src="https://via.placeholder.com/200x150" alt="Project 1">
+      <div class="project-content">
+        <h3>🔭 Project One</h3>
+        <p>Short description of your project. Include what it does and technologies used.</p>
+      </div>
+    </div>
+
+    <div class="project">
+      <img src="https://via.placeholder.com/200x150" alt="Project 2">
+      <div class="project-content">
+        <h3>🌌 Project Two</h3>
+        <p>Another awesome project description. Talk about the process, outcome, and your role.</p>
       </div>
     </div>
   </section>
 
-  <section id="about" class="about-section">
-    <div class="container">
-      <h2 class="section-title">About</h2>
-      <p class="about-text">
-        Hi, I'm Mathijs, a portrait and documentary photographer based in Nijmegen, The Netherlands. I am passionate about creating lasting visual stories for brands, companies, and individuals. My work focuses on authenticity and capturing emotions through the lens.
-      </p>
-    </div>
-  </section>
-
-  <section id="contact" class="contact-section">
-    <div class="container">
-      <h2 class="section-title">Contact</h2>
-      <p>Email: <a href="mailto:hello@mathijshanenkamp.com">hello@mathijshanenkamp.com</a></p>
-      <p>Phone: <a href="tel:+31614286237">+31 6 14286237</a></p>
-      <p>Location: Nijmegen, The Netherlands</p>
-      <p>
-        Social:
-        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a> | 
-        <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a> | 
-        <a href="https://open.spotify.com" target="_blank" rel="noopener noreferrer">Spotify</a>
-      </p>
-    </div>
+  <section id="contact" class="contact">
+    <h2>Contact Me</h2>
+    <form action="https://formspree.io/f/your-form-id" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required/>
+      <input type="email" name="email" placeholder="Your Email" required/>
+      <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
   </section>
 
   <footer>
-    <div class="container">
-      &copy; 2025 Mathijs Hanenkamp Photography
-    </div>
+    <p>© 2025 Your Name. All rights reserved.</p>
   </footer>
 
-  <script src="scripts.js"></script>
 </body>
 </html>
