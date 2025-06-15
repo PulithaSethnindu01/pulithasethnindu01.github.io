@@ -5,8 +5,122 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pulitha Sethnindu | Portfolio</title>
   <style>
-    /* (same styles as before — omitted here for brevity) */
-    /* Keep your existing style code from earlier versions */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      cursor: default;
+    }
+
+    .background {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: url('https://wallpapershome.com/images/pages/pic_h/26426.jpg') no-repeat center center/cover;
+      z-index: -2;
+    }
+
+    .blur-layer {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(12px);
+      z-index: -1;
+      pointer-events: none;
+      mask: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
+      -webkit-mask: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
+      transition: mask 0.2s ease, -webkit-mask 0.2s ease;
+    }
+
+    .content {
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      color: white;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(0,0,0,0.7);
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 0.3em;
+    }
+
+    .typing {
+      font-size: 1.2em;
+      border-right: 2px solid white;
+      white-space: nowrap;
+      overflow: hidden;
+      min-height: 1.5em;
+    }
+
+    /* Ruler styles */
+    .ruler-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      z-index: 2;
+      cursor: grab;
+    }
+
+    .ruler {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      user-select: none;
+      transition: none;
+    }
+
+    .tick {
+      position: relative;
+      width: 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .tick-line {
+      width: 1px;
+      background-color: white;
+    }
+
+    .tick.short .tick-line {
+      height: 10px;
+      opacity: 0.4;
+    }
+
+    .tick.medium .tick-line {
+      height: 20px;
+      opacity: 0.7;
+    }
+
+    .tick.long .tick-line {
+      height: 30px;
+      opacity: 1;
+    }
+
+    .tick-label {
+      position: absolute;
+      top: 35px;
+      font-size: 10px;
+      color: white;
+    }
   </style>
 </head>
 <body>
@@ -23,7 +137,7 @@
   </div>
 
   <script>
-    // Blur follows cursor
+    // Unblur on mouse move
     const blurLayer = document.getElementById('blur-layer');
     document.addEventListener('mousemove', (e) => {
       blurLayer.style.setProperty('--x', `${e.clientX}px`);
@@ -40,6 +154,7 @@
     ];
     const typingElement = document.getElementById("typing");
     let roleIndex = 0, charIndex = 0, isDeleting = false;
+
     function typeEffect() {
       const current = roles[roleIndex];
       typingElement.textContent = isDeleting
@@ -80,7 +195,7 @@
       ruler.appendChild(tick);
     }
 
-    // Drag + redirect
+    // Drag and redirect (left direction)
     const container = document.getElementById("ruler-container");
     let isDragging = false;
     let startX = 0;
@@ -105,8 +220,9 @@
     document.addEventListener("mouseup", () => {
       isDragging = false;
       container.style.cursor = "grab";
-      if (totalMoved > 250) {
-        window.location.href = "about.html"; // 🔁 Redirect if dragged right > 250px
+      if (totalMoved < -250) {
+        // Dragged left > 250px
+        window.location.href = "about.html";
       }
     });
   </script>
