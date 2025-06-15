@@ -5,26 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Your Name | Home</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet"/>
-  <style>
-    /* Include your CSS here, or link external CSS */
-    /* ... (same styles as you have) ... */
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- 🔄 Loading Screen -->
+  <div id="loading-screen">
+    <div class="loader">
+      <svg class="progress-ring" width="150" height="150">
+        <circle class="progress-ring-bg" cx="75" cy="75" r="70" />
+        <circle class="progress-ring-circle" cx="75" cy="75" r="70" />
+      </svg>
+      <div id="loading-text">0%</div>
+    </div>
+  </div>
+
+  <!-- 🌌 Background Layers -->
+  <div class="bg-blur"></div>
+  <div class="bg-clear" id="spotlight"></div>
+
+  <!-- Content -->
   <header>
     <h1>Your Name</h1>
     <nav>
-      <a href="index.html" style="color:#38bdf8;">Home</a>
       <a href="about.html">About</a>
       <a href="projects.html">Projects</a>
       <a href="contact.html">Contact</a>
     </nav>
   </header>
 
-  <section class="hero" style="padding: 80px 40px; max-width: 1000px; margin: auto;">
-    <img src="https://via.placeholder.com/150" alt="Profile Image" style="width:150px; border-radius:50%; border:3px solid #38bdf8; margin-bottom:20px;">
+  <section class="hero">
+    <img src="https://via.placeholder.com/150" alt="Profile Image">
     <h2>Hello, I'm Your Name</h2>
     <p>A passionate developer & designer building web experiences.</p>
   </section>
@@ -33,5 +44,6 @@
     <p>© 2025 Your Name. All rights reserved.</p>
   </footer>
 
+  <script src="script.js"></script>
 </body>
 </html>
