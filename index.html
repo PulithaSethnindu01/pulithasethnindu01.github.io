@@ -101,32 +101,68 @@
       pointer-events: none;
     }
 
-    /* Header */
-    header {
-      background: rgba(15, 23, 42, 0.95);
-      padding: 20px 40px;
-      position: sticky;
+    /* Sliding Sidebar Navigation */
+    #sidebar-nav {
+      position: fixed;
       top: 0;
+      left: -250px; /* Hidden to the left */
+      width: 250px;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.95);
+      padding: 40px 20px;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.5);
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1;
+      flex-direction: column;
+      transition: left 0.3s ease;
+      z-index: 10000;
+      overflow-y: auto;
     }
 
-    header h1 {
-      font-size: 1.5em;
+    #sidebar-nav.open {
+      left: 0;
+    }
+
+    #sidebar-nav h1 {
+      font-size: 1.8em;
       color: #38bdf8;
+      margin-bottom: 40px;
+      user-select: none;
     }
 
-    nav a {
+    #sidebar-nav a {
       color: #cbd5e1;
       text-decoration: none;
-      margin-left: 20px;
       font-weight: 500;
+      margin-bottom: 20px;
+      font-size: 1.2em;
     }
 
-    nav a:hover {
+    #sidebar-nav a:hover {
       color: #38bdf8;
+    }
+
+    /* Overlay behind sidebar to close it */
+    #sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.3);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 9999;
+    }
+
+    #sidebar-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Hide original header nav */
+    header {
+      display: none;
     }
 
     section {
@@ -232,6 +268,9 @@
         flex-direction: column;
         align-items: center;
       }
+      #sidebar-nav {
+        width: 200px;
+      }
     }
   </style>
 </head>
@@ -252,39 +291,41 @@
   <div class="bg-blur"></div>
   <div class="bg-clear" id="spotlight"></div>
 
-  <!-- Content -->
-  <header>
+  <!-- Sliding Sidebar Navigation -->
+  <nav id="sidebar-nav">
     <h1>Your Name</h1>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+    <a href="#about" class="nav-link">About</a>
+    <a href="#projects" class="nav-link">Projects</a>
+    <a href="#contact" class="nav-link">Contact</a>
+  </nav>
 
+  <!-- Sidebar Overlay -->
+  <div id="sidebar-overlay"></div>
+
+  <!-- Content -->
   <section class="hero">
-    <img src="https://via.placeholder.com/150" alt="Profile Image">
+    <img src="https://via.placeholder.com/150" alt="Profile Image" />
     <h2>Hello, I'm Your Name</h2>
     <p>A passionate developer & designer building web experiences.</p>
   </section>
 
   <section id="about" class="about">
     <h2>About Me</h2>
-    <img src="https://via.placeholder.com/200x200" alt="About Image">
+    <img src="https://via.placeholder.com/200x200" alt="About Image" />
     <p>Write a short paragraph about your background, interests, and skills.</p>
   </section>
 
   <section id="projects" class="projects">
     <h2>Projects</h2>
     <div class="project">
-      <img src="https://via.placeholder.com/200x150" alt="Project 1">
+      <img src="https://via.placeholder.com/200x150" alt="Project 1" />
       <div class="project-content">
         <h3>🔭 Project One</h3>
         <p>Description of your first project goes here.</p>
       </div>
     </div>
     <div class="project">
-      <img src="https://via.placeholder.com/200x150" alt="Project 2">
+      <img src="https://via.placeholder.com/200x150" alt="Project 2" />
       <div class="project-content">
         <h3>🌌 Project Two</h3>
         <p>Description of your second project goes here.</p>
@@ -343,6 +384,73 @@
         loadingScreen.classList.add('hidden');
       }
     }, 20); // 2s = 100 * 20ms
+
+
+    // Sidebar navigation logic
+    (() => {
+      const sidebar = document.getElementById('sidebar-nav');
+      const overlay = document.getElementById('sidebar-overlay');
+      const navLinks = sidebar.querySelectorAll('a.nav-link');
+
+      let startX = 0;
+      let currentX = 0;
+      let dragging = false;
+
+      // Open sidebar
+      function openSidebar() {
+        sidebar.classList.add('open');
+        overlay.classList.add('active');
+      }
+
+      // Close sidebar
+      function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+      }
+
+      // Handle pointer down (start swipe/drag)
+      document.addEventListener('pointerdown', (e) => {
+        if (sidebar.classList.contains('open')) return; // already open
+        if (e.clientX > 30) return; // start only at left edge (30px)
+        dragging = true;
+        startX = e.clientX;
+      });
+
+      // Handle pointer move
+      document.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        currentX = e.clientX;
+        const deltaX = currentX - startX;
+        if (deltaX > 50) {
+          openSidebar();
+          dragging = false;
+        }
+      });
+
+      // Handle pointer up / cancel
+      document.addEventListener('pointerup', () => {
+        dragging = false;
+      });
+      document.addEventListener('pointercancel', () => {
+        dragging = false;
+      });
+
+      // Close sidebar when clicking overlay
+      overlay.addEventListener('click', closeSidebar);
+
+      // Smooth scroll and close sidebar when clicking nav links
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('href').substring(1);
+          const targetEl = document.getElementById(targetId);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+          }
+          closeSidebar();
+        });
+      });
+    })();
   </script>
 
 </body>
