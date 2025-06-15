@@ -3,74 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Swipe Up to Next Page Demo</title>
+  <title>Vertical Swipe Pages Demo</title>
   <style>
-    /* Reset and basic */
     * {
       margin: 0; padding: 0; box-sizing: border-box;
     }
     html, body {
       height: 100%;
-      overflow: hidden; /* no scroll on body */
+      overflow: hidden;
       font-family: Arial, sans-serif;
       background: #0f172a;
       color: white;
     }
 
-    /* Container to hold pages stacked vertically */
     #container {
       position: relative;
       width: 100vw;
       height: 100vh;
       overflow: hidden;
-      touch-action: none; /* disable default touch gestures */
+      touch-action: none;
+      transition: transform 0.5s ease;
     }
 
-    /* Each page is 100vh */
     .page {
       position: absolute;
       width: 100vw;
       height: 100vh;
       left: 0;
-      transition: transform 0.5s ease;
-    }
-
-    /* Home page on screen initially */
-    #page1 {
-      top: 0;
-      background: url('https://wallpapershome.com/images/pages/pic_h/26426.jpg') no-repeat center center/cover;
+      user-select: none;
       display: flex;
       justify-content: center;
       align-items: center;
       font-size: 2rem;
-      user-select: none;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
-    /* Next page positioned below, hidden initially */
+    #page1 {
+      top: 0;
+      background: url('https://wallpapershome.com/images/pages/pic_h/26426.jpg') no-repeat center center/cover;
+    }
     #page2 {
       top: 100vh;
       background: #1e293b;
-      padding: 40px;
+      font-size: 1.5rem;
+      flex-direction: column;
+      text-align: center;
       overflow-y: auto;
+      padding: 40px;
+      color: #cbd5e1;
+    }
+    #page3 {
+      top: 200vh;
+      background: #334155;
+      font-size: 1.5rem;
+      flex-direction: column;
+      text-align: center;
+      padding: 40px;
       color: #cbd5e1;
     }
 
-    /* After swipe up, page1 slides up, page2 slides up */
-    .slide-up #page1 {
-      transform: translateY(-100vh);
-    }
-    .slide-up #page2 {
-      transform: translateY(-100vh);
+    /* Make page2 and page3 scrollable if content overflows */
+    #page2, #page3 {
+      overflow-y: auto;
     }
 
-    /* Content styling on page2 */
-    #page2 h2 {
-      color: #38bdf8;
-      margin-bottom: 20px;
+    /* Scrollbar styling for pages */
+    #page2::-webkit-scrollbar, #page3::-webkit-scrollbar {
+      width: 8px;
     }
-    #page2 p {
-      font-size: 1.2rem;
-      line-height: 1.6;
+    #page2::-webkit-scrollbar-thumb, #page3::-webkit-scrollbar-thumb {
+      background-color: #38bdf8;
+      border-radius: 4px;
     }
 
   </style>
@@ -78,47 +82,65 @@
 <body>
   <div id="container">
     <section id="page1" class="page">
-      Swipe UP from bottom to open next page
+      Swipe UP from bottom to open next page (Page 1)
     </section>
     <section id="page2" class="page" tabindex="0">
-      <h2>Welcome to Page 2</h2>
-      <p>
-        This page appears when you swipe up from the bottom of the home page.
-        You can scroll here normally if content overflows.
-      </p>
-      <p>Put your content here.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vehicula magna at libero mattis.</p>
-      <p>Scroll down for more content on this page.</p>
+      <h2>Page 2</h2>
+      <p>Here is the second page content.</p>
+      <p>Swipe up again from the bottom to go to the next page.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      <p>Scroll inside this page if needed.</p>
       <p>More text...</p>
-      <p>Even more text...</p>
+      <p>More text...</p>
+    </section>
+    <section id="page3" class="page" tabindex="0">
+      <h2>Page 3</h2>
+      <p>This is the last page.</p>
+      <p>Swipe up from the bottom here will not do anything (no more pages).</p>
+      <p>You can add as many pages as you want by stacking them vertically.</p>
     </section>
   </div>
 
 <script>
   (function() {
     const container = document.getElementById('container');
+    const totalPages = 3;
+    let currentPage = 0;  // zero-based index of current page
+
     let startY = 0;
     let isSwiping = false;
-    let threshold = 50; // minimum swipe up distance to trigger
+    const threshold = 50; // pixels to consider a valid swipe
 
-    container.addEventListener('touchstart', (e) => {
+    function updateContainerPosition() {
+      // Move container up by currentPage * 100vh
+      container.style.transform = `translateY(${-currentPage * 100}vh)`;
+    }
+
+    function tryGoNextPage() {
+      if (currentPage < totalPages -1) {
+        currentPage++;
+        updateContainerPosition();
+      }
+    }
+
+    // Touch events for mobile
+    container.addEventListener('touchstart', e => {
       const touch = e.touches[0];
       const windowHeight = window.innerHeight;
-      // Only start if touch starts near bottom 30px of viewport on page1
+      // Only start if touch starts near bottom 30px of viewport on the current page
       if (touch.clientY > windowHeight - 30) {
         startY = touch.clientY;
         isSwiping = true;
       }
     });
 
-    container.addEventListener('touchmove', (e) => {
+    container.addEventListener('touchmove', e => {
       if (!isSwiping) return;
       const touch = e.touches[0];
       let deltaY = startY - touch.clientY;
-      // If swipe up beyond threshold, add class to slide up pages
       if (deltaY > threshold) {
-        container.classList.add('slide-up');
-        isSwiping = false; // stop listening until next touchstart
+        tryGoNextPage();
+        isSwiping = false;
       }
     });
 
@@ -126,8 +148,8 @@
       isSwiping = false;
     });
 
-    // For mouse users (desktop) also allow drag up from bottom 30px
-    container.addEventListener('pointerdown', (e) => {
+    // Pointer events for mouse / desktop
+    container.addEventListener('pointerdown', e => {
       const windowHeight = window.innerHeight;
       if (e.clientY > windowHeight - 30) {
         startY = e.clientY;
@@ -135,11 +157,11 @@
       }
     });
 
-    container.addEventListener('pointermove', (e) => {
+    container.addEventListener('pointermove', e => {
       if (!isSwiping) return;
       let deltaY = startY - e.clientY;
       if (deltaY > threshold) {
-        container.classList.add('slide-up');
+        tryGoNextPage();
         isSwiping = false;
       }
     });
@@ -147,10 +169,13 @@
     container.addEventListener('pointerup', () => {
       isSwiping = false;
     });
+
     container.addEventListener('pointercancel', () => {
       isSwiping = false;
     });
+
   })();
 </script>
+
 </body>
 </html>
