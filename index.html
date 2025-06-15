@@ -64,52 +64,62 @@
       min-height: 1.5em;
     }
 
-    /* Ruler bar */
+    /* Ruler styles */
     .ruler-container {
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
       height: 60px;
-      overflow: hidden;
       background: rgba(0, 0, 0, 0.4);
+      overflow: hidden;
       z-index: 2;
       cursor: grab;
     }
 
     .ruler {
-      display: flex;
       position: absolute;
-      top: 50%;
+      top: 0;
       left: 0;
-      transform: translateY(-50%);
-      transition: none;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
       user-select: none;
+      transition: none;
     }
 
     .tick {
-      width: 10px;
-      height: 100%;
-      border-left: 1px solid white;
       position: relative;
+      width: 10px;
+      display: flex;
+      justify-content: center;
     }
 
-    .tick::after {
-      content: attr(data-label);
-      position: absolute;
-      top: 20px;
-      left: -5px;
-      color: white;
-      font-size: 10px;
-    }
-
-    .tick:nth-child(5n)::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      height: 20px;
+    .tick-line {
       width: 1px;
-      background: white;
+      background-color: white;
+    }
+
+    .tick.short .tick-line {
+      height: 10px;
+      opacity: 0.4;
+    }
+
+    .tick.medium .tick-line {
+      height: 20px;
+      opacity: 0.7;
+    }
+
+    .tick.long .tick-line {
+      height: 30px;
+      opacity: 1;
+    }
+
+    .tick-label {
+      position: absolute;
+      top: 35px;
+      font-size: 10px;
+      color: white;
     }
   </style>
 </head>
@@ -127,14 +137,14 @@
   </div>
 
   <script>
-    // Blur tracking
+    // Mouse blur tracking
     const blurLayer = document.getElementById('blur-layer');
     document.addEventListener('mousemove', (e) => {
       blurLayer.style.setProperty('--x', `${e.clientX}px`);
       blurLayer.style.setProperty('--y', `${e.clientY}px`);
     });
 
-    // Typing effect
+    // Typing animation
     const roles = [
       "Graphic Designer",
       "Web Developer",
@@ -142,7 +152,6 @@
       "Tech Explorer",
       "UI/UX Enthusiast"
     ];
-
     const typingElement = document.getElementById("typing");
     let roleIndex = 0;
     let charIndex = 0;
@@ -172,39 +181,52 @@
 
     typeEffect();
 
-    // Ruler generation
+    // Build stylish ruler
     const ruler = document.getElementById("ruler");
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 500; i++) {
       const tick = document.createElement("div");
       tick.className = "tick";
-      tick.setAttribute("data-label", i % 5 === 0 ? i : "");
+
+      if (i % 10 === 0) {
+        tick.classList.add("long");
+        const label = document.createElement("div");
+        label.className = "tick-label";
+        label.textContent = i;
+        tick.appendChild(label);
+      } else if (i % 5 === 0) {
+        tick.classList.add("medium");
+      } else {
+        tick.classList.add("short");
+      }
+
+      const line = document.createElement("div");
+      line.className = "tick-line";
+      tick.appendChild(line);
       ruler.appendChild(tick);
     }
 
-    // Dragging logic
+    // Ruler dragging
+    const container = document.getElementById("ruler-container");
     let isDragging = false;
     let startX = 0;
-    let scrollLeft = 0;
+    let rulerX = 0;
 
-    const rulerContainer = document.getElementById("ruler-container");
-
-    rulerContainer.addEventListener("mousedown", (e) => {
+    container.addEventListener("mousedown", (e) => {
       isDragging = true;
-      startX = e.pageX - ruler.offsetLeft;
-      rulerContainer.style.cursor = "grabbing";
-    });
-
-    document.addEventListener("mouseup", () => {
-      isDragging = false;
-      rulerContainer.style.cursor = "grab";
+      startX = e.clientX;
+      rulerX = parseInt(getComputedStyle(ruler).left) || 0;
+      container.style.cursor = "grabbing";
     });
 
     document.addEventListener("mousemove", (e) => {
       if (!isDragging) return;
-      e.preventDefault();
-      const x = e.pageX;
-      const walk = x - startX;
-      ruler.style.left = `${walk}px`;
+      const dx = e.clientX - startX;
+      ruler.style.left = `${rulerX + dx}px`;
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      container.style.cursor = "grab";
     });
   </script>
 </body>
