@@ -1,374 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pulitha Adhikari — Fantasy Portfolio</title>
+  <title>Mathijs Hanenkamp Photography</title>
 
-  <!-- tsParticles CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.1.0/tsparticles.bundle.min.js"></script>
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&display=swap" rel="stylesheet" />
-
-  <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-    }
-    body, html {
-      height: 100%;
-      font-family: 'Philosopher', sans-serif;
-      background-color: #0a0a0f;
-      color: #fff;
-      overflow-x: hidden;
-    }
-    #tsparticles {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      z-index: -1;
-    }
-    header {
-      position: fixed;
-      top: 0; width: 100%;
-      background: rgba(10,10,15,0.7);
-      backdrop-filter: blur(10px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      z-index: 10;
-    }
-    header h1 {
-      color: #c9a9ff;
-      font-size: 1.8rem;
-    }
-    nav a {
-      color: #eee;
-      text-decoration: none;
-      margin-left: 1.5rem;
-      font-weight: bold;
-      position: relative;
-    }
-    nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; left: 0;
-      height: 2px; width: 0%;
-      background: #c9a9ff;
-      transition: width 0.3s ease;
-    }
-    nav a:hover::after {
-      width: 100%;
-    }
-    section {
-      padding: 8rem 2rem 4rem;
-      max-width: 1000px;
-      margin: auto;
-    }
-    #hero {
-      height: 100vh;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    .hero-layer {
-      text-align: center;
-      transform: translateZ(0);
-      will-change: transform;
-    }
-    #hero h2 {
-      font-size: 3rem;
-      color: #c9a9ff;
-    }
-    .typed-text {
-      font-size: 1.4rem;
-      margin-top: 1rem;
-      opacity: 0.9;
-    }
-    h3 {
-      font-size: 2rem;
-      margin-bottom: 1.5rem;
-      color: #c9a9ff;
-    }
-    .project, .video {
-      background: rgba(255,255,255,0.05);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 0 10px rgba(201,169,255,0.2);
-      transition: transform 0.3s ease;
-    }
-    .project:hover, .video:hover {
-      transform: translateY(-5px);
-    }
-    .video iframe {
-      width: 100%;
-      height: 300px;
-      border-radius: 10px;
-      border: none;
-    }
-    footer {
-      text-align: center;
-      padding: 2rem;
-      background: #111;
-      color: #aaa;
-      font-size: 0.9rem;
-    }
-    /* Music Controls */
-    .music-controls {
-      position: fixed;
-      bottom: 20px; right: 20px;
-      background: rgba(0,0,0,0.6);
-      padding: 12px;
-      border-radius: 10px;
-      z-index: 20;
-      display: none; /* hidden until user interaction */
-    }
-    .glow-button {
-      background: linear-gradient(45deg, #c9a9ff, #8a2be2);
-      color: white;
-      padding: 10px 18px;
-      border: none;
-      border-radius: 10px;
-      box-shadow: 0 0 12px #c9a9ff;
-      font-size: 1rem;
-      transition: 0.3s ease;
-      cursor: pointer;
-    }
-    .glow-button:hover {
-      box-shadow: 0 0 25px #c9a9ff, 0 0 35px #8a2be2;
-      transform: scale(1.05);
-    }
-    .music-controls select {
-      background: #222;
-      color: white;
-      border: 1px solid #555;
-      padding: 8px 10px;
-      border-radius: 6px;
-      margin-left: 10px;
-    }
-    .music-controls select:hover {
-      background: #333;
-    }
-    /* Overlay to require user click */
-    #overlay {
-      position: fixed;
-      top:0; left:0; width: 100vw; height: 100vh;
-      background: linear-gradient(135deg, #1b003b, #3b006b);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      z-index: 9999;
-      color: #c9a9ff;
-      font-size: 1.8rem;
-      user-select: none;
-    }
-    #overlay button {
-      margin-top: 20px;
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(45deg, #c9a9ff, #8a2be2);
-      color: white;
-      box-shadow: 0 0 20px #c9a9ff;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-    #overlay button:hover {
-      box-shadow: 0 0 40px #8a2be2;
-      transform: scale(1.1);
-    }
-  </style>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display&display=swap" rel="stylesheet" />
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+  
 </head>
 <body>
 
-  <!-- Particle Background -->
-  <div id="tsparticles"></div>
-
-  <!-- Overlay: must click to start -->
-  <div id="overlay">
-    <div>Welcome to Pulitha's Fantasy Portfolio</div>
-    <button id="start-btn">Start Experience</button>
-  </div>
-
-  <!-- Header -->
-  <header>
-    <h1>Pulitha</h1>
-    <nav>
-      <a href="#hero">Home</a>
-      <a href="#projects">Projects</a>
-      <a href="#gallery">Gallery</a>
-      <a href="#contact">Contact</a>
-    </nav>
+  <header id="header">
+    <div class="container">
+      <h1 class="logo">Mathijs Hanenkamp</h1>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
-  <!-- Hero Section -->
-  <section id="hero">
-    <div class="hero-layer">
-      <h2 id="hero-title">Hi, I'm Pulitha</h2>
-      <div class="typed-text">Web Developer | UI Designer | Fantasy Explorer</div>
+  <section class="hero">
+    <div class="container hero-content">
+      <h2 class="hero-title">Portrait & Documentary Photographer</h2>
+      <p class="hero-subtitle">Creating visual legacies for brands, companies, and people. Based in Nijmegen, The Netherlands.</p>
+      <a href="#portfolio" class="btn">View Portfolio</a>
+    </div>
+    <canvas id="hero-canvas"></canvas>
+  </section>
+
+  <section id="portfolio" class="portfolio-section">
+    <div class="container">
+      <h2 class="section-title">Portfolio</h2>
+      <div class="gallery">
+        <!-- Gallery items -->
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="Photo 1" />
+          <div class="caption">Urban portrait</div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=600&q=80" alt="Photo 2" />
+          <div class="caption">Documentary shot</div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=600&q=80" alt="Photo 3" />
+          <div class="caption">Black & White Portrait</div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1468071174046-657d9d351a40?auto=format&fit=crop&w=600&q=80" alt="Photo 4" />
+          <div class="caption">Street life</div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=600&q=80" alt="Photo 5" />
+          <div class="caption">Candid moment</div>
+        </div>
+        <div class="gallery-item">
+          <img src="https://images.unsplash.com/photo-1504203701135-0c27bce60792?auto=format&fit=crop&w=600&q=80" alt="Photo 6" />
+          <div class="caption">Natural light portrait</div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Projects Section -->
-  <section id="projects">
-    <h3>Projects</h3>
-    <div class="project">
-      <h4>AstroAnanda.com</h4>
-      <p>My personal astronomy site with Google Sheets integration and form-based interaction.</p>
-    </div>
-    <div class="project">
-      <h4>Sakwala Free.nf</h4>
-      <p>Backup backend using InfinityFree with HTML and JS form routing.</p>
+  <section id="about" class="about-section">
+    <div class="container">
+      <h2 class="section-title">About</h2>
+      <p class="about-text">
+        Hi, I'm Mathijs, a portrait and documentary photographer based in Nijmegen, The Netherlands. I am passionate about creating lasting visual stories for brands, companies, and individuals. My work focuses on authenticity and capturing emotions through the lens.
+      </p>
     </div>
   </section>
 
-  <!-- Gallery Section -->
-  <section id="gallery">
-    <h3>Gallery / Video</h3>
-    <div class="video">
-      <iframe src="https://www.youtube.com/embed/3rTqmRxIShQ" title="Fantasy Sky Music" allowfullscreen></iframe>
-    </div>
-    <div class="video">
-      <iframe src="https://www.youtube.com/embed/xOCurBYI_jU" title="Fantasy Scene Animation" allowfullscreen></iframe>
+  <section id="contact" class="contact-section">
+    <div class="container">
+      <h2 class="section-title">Contact</h2>
+      <p>Email: <a href="mailto:hello@mathijshanenkamp.com">hello@mathijshanenkamp.com</a></p>
+      <p>Phone: <a href="tel:+31614286237">+31 6 14286237</a></p>
+      <p>Location: Nijmegen, The Netherlands</p>
+      <p>
+        Social:
+        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a> | 
+        <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a> | 
+        <a href="https://open.spotify.com" target="_blank" rel="noopener noreferrer">Spotify</a>
+      </p>
     </div>
   </section>
 
-  <!-- Contact Section -->
-  <section id="contact">
-    <h3>Contact Me</h3>
-    <p>Email: pulitha@example.com</p>
-    <p>Instagram: @astro.ananda</p>
-  </section>
-
-  <!-- Footer -->
   <footer>
-    &copy; 2025 Pulitha Adhikari • All rights reserved.
+    <div class="container">
+      &copy; 2025 Mathijs Hanenkamp Photography
+    </div>
   </footer>
 
-  <!-- Music Player -->
-  <audio id="bg-music" loop crossorigin="anonymous">
-    <source src="https://cdn.pixabay.com/download/audio/2022/03/30/audio_5ecdb1c279.mp3" type="audio/mpeg" />
-  </audio>
-
-  <!-- Music Controls -->
-  <div class="music-controls" id="music-controls">
-    <button id="music-toggle" class="glow-button">🔈 Play Music</button>
-    <select id="music-select">
-      <option value="1">🎵 Enchanted Fantasy</option>
-      <option value="2">🌌 Lumina</option>
-      <option value="3">🗺️ Fantasy Adventure</option>
-    </select>
-  </div>
-
-  <script>
-    // Initialize particles
-    tsParticles.load("tsparticles", {
-      fullScreen: { enable: false },
-      background: { color: "#0a0a0f" },
-      particles: {
-        number: { value: 60, density: { enable: true, area: 800 } },
-        color: { value: "#c9a9ff" },
-        shape: { type: "circle" },
-        opacity: { value: 0.6, random: true },
-        size: { value: 3, random: true },
-        move: {
-          enable: true,
-          speed: 1,
-          direction: "none",
-          outModes: "bounce"
-        },
-        links: {
-          enable: true,
-          distance: 140,
-          color: "#c9a9ff",
-          opacity: 0.3,
-          width: 1
-        }
-      },
-      interactivity: {
-        events: {
-          onHover: { enable: true, mode: "grab" },
-          onClick: { enable: true, mode: "repulse" }
-        },
-        modes: {
-          grab: { distance: 120, links: { opacity: 0.5 } },
-          repulse: { distance: 100 }
-        }
-      },
-      detectRetina: true
-    });
-
-    // Parallax scroll effect
-    window.addEventListener("scroll", function () {
-      const scrollY = window.scrollY;
-      const heroTitle = document.getElementById("hero-title");
-      if (heroTitle) {
-        heroTitle.style.transform = `translateY(${scrollY * 0.3}px)`;
-      }
-    });
-
-    // Music player elements
-    const music = document.getElementById("bg-music");
-    const toggle = document.getElementById("music-toggle");
-    const selector = document.getElementById("music-select");
-    const musicControls = document.getElementById("music-controls");
-    const overlay = document.getElementById("overlay");
-    const startBtn = document.getElementById("start-btn");
-
-    const tracks = {
-      1: "https://cdn.pixabay.com/download/audio/2022/03/30/audio_5ecdb1c279.mp3", // Enchanted Fantasy
-      2: "https://cdn.pixabay.com/download/audio/2023/10/02/audio_d5f12a6930.mp3", // Lumina
-      3: "https://cdn.pixabay.com/download/audio/2021/09/02/audio_55a112f3f6.mp3"  // Fantasy Adventure
-    };
-
-    let musicPlaying = false;
-
-    // Function to enable UI & music controls after user interaction
-    function startExperience() {
-      overlay.style.display = 'none';
-      musicControls.style.display = 'flex';
-
-      // Preload first track
-      music.src = tracks[selector.value];
-      music.load();
-    }
-
-    startBtn.addEventListener('click', () => {
-      startExperience();
-    });
-
-    toggle.addEventListener("click", () => {
-      if (!musicPlaying) {
-        music.play().then(() => {
-          toggle.textContent = "🔊 Pause Music";
-          musicPlaying = true;
-        }).catch(err => {
-          toggle.textContent = "🔇 Playback blocked. Click again.";
-          console.warn("Playback failed:", err);
-        });
-      } else {
-        music.pause();
-        toggle.textContent = "🔈 Play Music";
-        musicPlaying = false;
-      }
-    });
-
-    selector.addEventListener("change", (e) => {
-      const selected = e.target.value;
-      music.src = tracks[selected];
-      music.load();
-      if (musicPlaying) {
-        music.play().catch(err => {
-          console.warn("Playback failed after track change:", err);
-        });
-      }
-    });
-  </script>
+  <script src="scripts.js"></script>
 </body>
 </html>
