@@ -3,15 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pulitha Adhikari — Portfolio</title>
+  <title>Pulitha Adhikari — Fantasy Portfolio</title>
+
+  <!-- tsParticles CDN -->
   <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.1.0/tsparticles.bundle.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family: 'Poppins', sans-serif;
-      background: #0e0e0e;
-      color: #fff;
+      font-family: 'Philosopher', sans-serif;
+      background-color: #0a0a0f;
+      color: #ffffff;
       overflow-x: hidden;
     }
 
@@ -25,26 +31,27 @@
 
     header {
       position: fixed;
-      width: 100%;
       top: 0;
+      width: 100%;
+      background: rgba(10, 10, 15, 0.7);
+      backdrop-filter: blur(10px);
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1rem 2rem;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(10px);
       z-index: 10;
     }
 
     header h1 {
-      color: #00d6ff;
+      color: #c9a9ff;
+      font-size: 1.8rem;
     }
 
     nav a {
       color: #eee;
       text-decoration: none;
       margin-left: 1.5rem;
-      font-weight: 600;
+      font-weight: bold;
       position: relative;
     }
 
@@ -55,7 +62,7 @@
       left: 0;
       height: 2px;
       width: 0%;
-      background: #00d6ff;
+      background: #c9a9ff;
       transition: width 0.3s ease;
     }
 
@@ -78,40 +85,38 @@
     }
 
     #hero h2 {
-      font-size: 3.5rem;
-      color: #00d6ff;
+      font-size: 3rem;
+      color: #c9a9ff;
     }
 
     .typed-text {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       margin-top: 1rem;
       opacity: 0.9;
     }
 
-    #projects h3,
-    #gallery h3,
-    #contact h3 {
+    #projects h3, #gallery h3, #contact h3 {
       font-size: 2rem;
-      margin-bottom: 2rem;
-      color: #00d6ff;
+      margin-bottom: 1.5rem;
+      color: #c9a9ff;
     }
 
-    .project, .media-item {
+    .project, .video {
       background: rgba(255, 255, 255, 0.05);
       border-radius: 12px;
-      padding: 1rem;
+      padding: 1.5rem;
       margin-bottom: 1.5rem;
-      box-shadow: 0 0 10px rgba(0,214,255,0.1);
+      box-shadow: 0 0 10px rgba(201,169,255,0.2);
+      transition: transform 0.3s ease;
     }
 
-    .media-grid {
-      display: grid;
-      gap: 1rem;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    .project:hover, .video:hover {
+      transform: translateY(-5px);
     }
 
-    .media-item img, .media-item iframe {
+    .video iframe {
       width: 100%;
+      height: 300px;
       border-radius: 10px;
     }
 
@@ -119,36 +124,41 @@
       text-align: center;
       padding: 2rem;
       background: #111;
-      color: #777;
+      color: #aaa;
       font-size: 0.9rem;
     }
 
-    #music-toggle {
-      cursor: pointer;
-      background: none;
-      border: 2px solid #00d6ff;
-      color: #00d6ff;
-      border-radius: 50px;
-      padding: 0.4rem 1rem;
-      font-size: 1rem;
-      transition: 0.3s;
+    /* Music controls */
+    .music-controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.6);
+      padding: 12px;
+      border-radius: 10px;
+      z-index: 20;
     }
 
-    #music-toggle:hover {
-      background: #00d6ff;
-      color: #000;
+    .music-controls button, .music-controls select {
+      font-family: inherit;
+      background: #222;
+      color: #fff;
+      border: 1px solid #555;
+      border-radius: 5px;
+      padding: 8px 10px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .music-controls button:hover, .music-controls select:hover {
+      background: #333;
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Animation -->
+  <!-- Particles Background -->
   <div id="tsparticles"></div>
-
-  <!-- Background Music -->
-  <audio id="bg-music" loop>
-    <source src="https://cdn.pixabay.com/download/audio/2023/03/02/audio_5f278edcb3.mp3?filename=dreamy-background-141892.mp3" type="audio/mpeg">
-  </audio>
 
   <!-- Header -->
   <header>
@@ -158,14 +168,13 @@
       <a href="#projects">Projects</a>
       <a href="#gallery">Gallery</a>
       <a href="#contact">Contact</a>
-      <button id="music-toggle" title="Toggle Background Music">🔈 Music</button>
     </nav>
   </header>
 
   <!-- Hero Section -->
   <section id="hero">
     <h2>Hi, I'm Pulitha</h2>
-    <div class="typed-text">Web Developer | UI Designer | Astronomy Enthusiast</div>
+    <div class="typed-text">Web Developer | UI Designer | Fantasy Explorer</div>
   </section>
 
   <!-- Projects Section -->
@@ -173,28 +182,26 @@
     <h3>Projects</h3>
     <div class="project">
       <h4>AstroAnanda.com</h4>
-      <p>A GitHub-hosted astronomy blog + form with Google Sheets backend.</p>
+      <p>My personal astronomy site with Google Sheets integration via Apps Script and form-based interaction.</p>
     </div>
     <div class="project">
-      <h4>Sakwala</h4>
-      <p>InfinityFree PHP backend form test and fallback server.</p>
+      <h4>Sakwala Free.nf</h4>
+      <p>Simple backend using InfinityFree as fallback for form submission. HTML + JS based routing.</p>
     </div>
   </section>
 
   <!-- Gallery Section -->
   <section id="gallery">
-    <h3>Gallery & Media</h3>
-    <div class="media-grid">
-      <div class="media-item">
-        <img src="https://images.unsplash.com/photo-1601132359864-0b12df707b96?auto=format&fit=crop&w=800&q=80" alt="Astrophotography" />
-      </div>
-      <div class="media-item">
-        <iframe src="https://www.youtube.com/embed/21X5lGlDOfg" title="NASA Live Stream" allowfullscreen></iframe>
-      </div>
+    <h3>Gallery / Video</h3>
+    <div class="video">
+      <iframe src="https://www.youtube.com/embed/3rTqmRxIShQ" title="Fantasy Sky Music" allowfullscreen></iframe>
+    </div>
+    <div class="video">
+      <iframe src="https://www.youtube.com/embed/xOCurBYI_jU" title="Fantasy Scene Animation" allowfullscreen></iframe>
     </div>
   </section>
 
-  <!-- Contact -->
+  <!-- Contact Section -->
   <section id="contact">
     <h3>Contact Me</h3>
     <p>Email: pulitha@example.com</p>
@@ -203,26 +210,46 @@
 
   <!-- Footer -->
   <footer>
-    &copy; 2025 Pulitha Adhikari • Built with ❤️ and stardust
+    &copy; 2025 Pulitha Adhikari • All rights reserved.
   </footer>
+
+  <!-- Music Player -->
+  <audio id="bg-music" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/30/audio_5ecdb1c279.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Music Controls -->
+  <div class="music-controls">
+    <button id="music-toggle">🔈 Play Music</button>
+    <select id="music-select">
+      <option value="1">🎵 Enchanted Fantasy</option>
+      <option value="2">🌌 Lumina</option>
+      <option value="3">🗺️ Fantasy Adventure</option>
+    </select>
+  </div>
 
   <!-- Scripts -->
   <script>
-    // tsParticles background
+    // Particle background
     tsParticles.load("tsparticles", {
-      background: { color: "#0e0e0e" },
       fullScreen: { enable: false },
+      background: { color: "#0a0a0f" },
       particles: {
-        number: { value: 70 },
-        color: { value: "#00d6ff" },
+        number: { value: 60, density: { enable: true, area: 800 } },
+        color: { value: "#c9a9ff" },
         shape: { type: "circle" },
         opacity: { value: 0.6, random: true },
         size: { value: 3, random: true },
-        move: { enable: true, speed: 0.8, direction: "none", outModes: "bounce" },
+        move: {
+          enable: true,
+          speed: 1,
+          direction: "none",
+          outModes: "bounce"
+        },
         links: {
           enable: true,
-          distance: 130,
-          color: "#00d6ff",
+          distance: 140,
+          color: "#c9a9ff",
           opacity: 0.3,
           width: 1
         }
@@ -236,23 +263,45 @@
           grab: { distance: 120, links: { opacity: 0.5 } },
           repulse: { distance: 100 }
         }
-      }
+      },
+      detectRetina: true
     });
 
-    // Music toggle
+    // Music Player Logic
     const music = document.getElementById("bg-music");
     const toggle = document.getElementById("music-toggle");
+    const selector = document.getElementById("music-select");
+
+    const tracks = {
+      1: "https://cdn.pixabay.com/download/audio/2022/03/30/audio_5ecdb1c279.mp3", // Enchanted Fantasy
+      2: "https://cdn.pixabay.com/download/audio/2023/10/02/audio_d5f12a6930.mp3", // Lumina
+      3: "https://cdn.pixabay.com/download/audio/2021/09/02/audio_55a112f3f6.mp3"  // Fantasy Adventure
+    };
+
     let musicPlaying = false;
 
     toggle.addEventListener("click", () => {
       if (!musicPlaying) {
-        music.play();
-        toggle.textContent = "🔊 Playing";
+        music.play().then(() => {
+          toggle.textContent = "🔊 Pause Music";
+        }).catch(err => {
+          console.error("Playback failed:", err);
+          toggle.textContent = "🔇 Failed";
+        });
       } else {
         music.pause();
-        toggle.textContent = "🔈 Music";
+        toggle.textContent = "🔈 Play Music";
       }
       musicPlaying = !musicPlaying;
+    });
+
+    selector.addEventListener("change", (e) => {
+      const selected = e.target.value;
+      music.src = tracks[selected];
+      music.load();
+      if (musicPlaying) {
+        music.play();
+      }
     });
   </script>
 </body>
