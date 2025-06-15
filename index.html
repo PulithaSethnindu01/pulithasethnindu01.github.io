@@ -1,285 +1,433 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pulitha Adhikari | Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  <title>Pulitha Adhikari | Neon Cyber Grid Portfolio</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  
   <style>
-    /* Reset & base */
+    /* Base Reset */
     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0; box-sizing: border-box;
     }
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f9f9f9;
-      color: #333333;
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      font-family: 'Share Tech Mono', monospace;
+      background: #010014;
+      color: #00fff7;
+      overflow-x: hidden;
+      cursor: none;
+      user-select: none;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      scroll-behavior: smooth;
     }
-    a {
-      color: #5a8dee;
-      text-decoration: none;
-      transition: color 0.3s ease;
+
+    /* Neon Glow Text */
+    .neon-text {
+      color: #00fff7;
+      text-shadow:
+         0 0 5px #00fff7,
+         0 0 10px #00fff7,
+         0 0 20px #00fff7,
+         0 0 40px #0ff,
+         0 0 80px #0ff;
     }
-    a:hover {
-      color: #3b6fc2;
-    }
-    h1, h2, h3, h4 {
-      color: #111111;
-      margin-bottom: 0.5rem;
+
+    /* Neon Button */
+    .btn-neon {
+      padding: 0.75rem 2.5rem;
+      border: 2px solid #00fff7;
+      background: transparent;
+      color: #00fff7;
+      font-family: 'Orbitron', sans-serif;
       font-weight: 700;
+      font-size: 1.15rem;
+      border-radius: 10px;
+      box-shadow:
+        0 0 10px #00fff7,
+        0 0 20px #00fff7;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+      margin-top: 1rem;
+      display: inline-block;
+      text-align: center;
     }
-    p {
-      margin-bottom: 1.2rem;
-      color: #444444;
+    .btn-neon:hover,
+    .btn-neon:focus {
+      background: #00fff7;
+      color: #010014;
+      box-shadow:
+        0 0 20px #0ff,
+        0 0 40px #0ff,
+        0 0 60px #0ff,
+        0 0 80px #0ff;
+      outline: none;
     }
 
     /* Container */
     .container {
-      max-width: 1080px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 2rem 1rem;
+      padding: 4rem 1rem;
+      flex-grow: 1;
+      z-index: 2;
+      position: relative;
     }
 
     /* Header */
     header {
-      background: #fff;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      position: sticky;
+      position: fixed;
+      width: 100%;
       top: 0;
-      z-index: 1000;
-    }
-    .nav-wrapper {
+      left: 0;
+      padding: 1rem 2rem;
+      background: rgba(1, 0, 20, 0.85);
+      box-shadow: 0 0 20px #00fff7aa;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 0;
-    }
-    .logo {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #111111;
-      letter-spacing: 0.1rem;
+      z-index: 10;
       user-select: none;
+    }
+    header .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 1.8rem;
+      color: #00fff7;
+      letter-spacing: 0.2rem;
+      text-transform: uppercase;
     }
     nav a {
+      color: #00fff7;
       margin-left: 2rem;
-      font-weight: 600;
+      font-weight: 700;
+      font-family: 'Share Tech Mono', monospace;
       font-size: 1rem;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s ease;
     }
+    nav a:hover,
     nav a.active {
-      border-bottom: 2px solid #5a8dee;
-      padding-bottom: 0.2rem;
+      color: #0ff;
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background: #00fff7;
+      bottom: -4px;
+      left: 0;
+      transition: width 0.3s ease;
+    }
+    nav a:hover::after,
+    nav a.active::after {
+      width: 100%;
     }
 
-    /* Hero Section */
+    /* Hero */
     .hero {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 80vh;
-      padding: 4rem 1rem;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-      margin-bottom: 4rem;
+      padding-top: 8rem;
+      text-align: center;
+      position: relative;
+      overflow: visible;
     }
     .hero h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      line-height: 1.1;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      color: #00fff7;
+      letter-spacing: 0.15em;
+      text-shadow:
+        0 0 10px #00fff7,
+        0 0 20px #00fff7,
+        0 0 40px #0ff;
+      animation: flicker 3s infinite alternate;
+      user-select: none;
+    }
+    @keyframes flicker {
+      0%, 100% { opacity: 1; text-shadow:
+        0 0 10px #00fff7,
+        0 0 20px #00fff7,
+        0 0 40px #0ff;
+      }
+      50% { opacity: 0.85; text-shadow:
+        0 0 6px #00fff7,
+        0 0 12px #00fff7;
+      }
     }
     .hero p {
-      font-size: 1.25rem;
-      max-width: 600px;
-      margin-bottom: 2rem;
-      color: #555555;
+      margin-top: 1rem;
+      font-size: 1.3rem;
+      color: #00fff7aa;
+      letter-spacing: 0.07em;
     }
-    .btn-primary {
-      background-color: #5a8dee;
-      color: #fff;
-      padding: 0.75rem 2rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 1.1rem;
-      box-shadow: 0 4px 12px rgba(90, 141, 238, 0.4);
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    .hero img {
+      margin-top: 2rem;
+      width: 250px;
+      border-radius: 20px;
+      box-shadow:
+        0 0 30px #0ff,
+        0 0 60px #00fff7;
+      filter: drop-shadow(0 0 5px #0ff);
       user-select: none;
-      text-align: center;
-      display: inline-block;
+      animation: glowPulse 4s ease-in-out infinite;
     }
-    .btn-primary:hover,
-    .btn-primary:focus {
-      background-color: #3b6fc2;
-      box-shadow: 0 6px 16px rgba(59, 111, 194, 0.6);
-      outline: none;
+    @keyframes glowPulse {
+      0%, 100% {
+        box-shadow:
+          0 0 30px #0ff,
+          0 0 60px #00fff7;
+      }
+      50% {
+        box-shadow:
+          0 0 45px #0ff,
+          0 0 90px #00fff7;
+      }
     }
 
     /* Sections */
     section {
-      margin-bottom: 5rem;
+      margin: 6rem 0;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1s ease;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     section h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
-      border-left: 4px solid #5a8dee;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      border-left: 5px solid #00fff7;
       padding-left: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      user-select: none;
     }
-
-    /* About */
-    .about-text {
+    section p {
       font-size: 1.1rem;
+      line-height: 1.6;
       max-width: 720px;
-      color: #555555;
-      line-height: 1.7;
+      color: #00fff7cc;
+      margin-bottom: 2rem;
     }
 
     /* Projects Grid */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
       gap: 2rem;
+      max-width: 900px;
     }
     .project-card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.07);
-      padding: 1.5rem;
-      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      background: #020027;
+      border: 2px solid #00fff7;
+      border-radius: 18px;
+      box-shadow:
+        0 0 15px #00fff7;
+      overflow: hidden;
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow:
+        0 0 30px #0ff,
+        0 0 60px #00fff7;
+    }
+    .project-card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-bottom: 2px solid #00fff7;
+      user-select: none;
+    }
+    .project-content {
+      padding: 1rem 1.25rem;
+      flex-grow: 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
-    .project-card:hover,
-    .project-card:focus-within {
-      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
-      transform: translateY(-6px);
-      outline: none;
+    .project-content h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      color: #00fff7;
+      margin-bottom: 0.5rem;
+      user-select: none;
     }
-    .project-card img {
-      max-width: 100%;
-      border-radius: 10px;
+    .project-content p {
+      color: #00fff799;
+      font-size: 0.95rem;
+      flex-grow: 1;
       margin-bottom: 1rem;
       user-select: none;
     }
-    .project-card h3 {
-      margin-bottom: 0.5rem;
-      color: #111111;
-    }
-    .project-card p {
-      color: #666666;
-      flex-grow: 1;
-      font-size: 0.95rem;
-    }
     .project-link {
-      margin-top: 1rem;
-      font-weight: 600;
-      color: #5a8dee;
       align-self: flex-start;
+      color: #0ff;
+      font-weight: 700;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 0.1em;
+      text-decoration: none;
       transition: color 0.3s ease;
     }
     .project-link:hover {
-      color: #3b6fc2;
+      color: #00fff7;
+      text-shadow:
+        0 0 6px #0ff,
+        0 0 10px #00fff7;
     }
 
-    /* Contact Section */
+    /* Contact Form */
     form {
-      max-width: 600px;
-      background: #fff;
+      background: #020027;
+      border: 2px solid #00fff7;
       padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      border-radius: 18px;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 0 20px #00fff7aa;
     }
     label {
       display: block;
-      font-weight: 600;
       margin-bottom: 0.5rem;
-      color: #222222;
+      color: #00fff7cc;
+      font-weight: 700;
+      font-family: 'Share Tech Mono', monospace;
+      user-select: none;
     }
     input[type="text"],
     input[type="email"],
     textarea {
       width: 100%;
       padding: 0.75rem 1rem;
-      border-radius: 8px;
-      border: 1px solid #ddd;
+      margin-bottom: 1.25rem;
+      border-radius: 12px;
+      border: 1.5px solid #00fff7;
+      background: #010014;
+      color: #00fff7;
+      font-family: 'Share Tech Mono', monospace;
       font-size: 1rem;
-      margin-bottom: 1.5rem;
-      transition: border-color 0.3s ease;
+      transition: box-shadow 0.3s ease;
       resize: vertical;
-      font-family: 'Inter', sans-serif;
     }
     input[type="text"]:focus,
     input[type="email"]:focus,
     textarea:focus {
-      border-color: #5a8dee;
       outline: none;
-      box-shadow: 0 0 8px rgba(90, 141, 238, 0.3);
+      box-shadow:
+        0 0 12px #0ff,
+        0 0 24px #00fff7;
+      border-color: #0ff;
+      background: #010022;
     }
     button[type="submit"] {
-      background-color: #5a8dee;
-      color: white;
-      padding: 0.85rem 2.5rem;
-      border: none;
-      border-radius: 8px;
+      background: transparent;
+      border: 2px solid #00fff7;
+      color: #00fff7;
+      padding: 1rem 2.5rem;
+      font-family: 'Orbitron', sans-serif;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
+      border-radius: 12px;
       cursor: pointer;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow:
+        0 0 10px #00fff7,
+        0 0 20px #0ff;
+      transition: all 0.3s ease;
       user-select: none;
       display: block;
-      margin-top: 1rem;
+      margin-top: 0.5rem;
     }
     button[type="submit"]:hover,
     button[type="submit"]:focus {
-      background-color: #3b6fc2;
-      box-shadow: 0 6px 16px rgba(59, 111, 194, 0.6);
+      background: #00fff7;
+      color: #010014;
+      box-shadow:
+        0 0 30px #0ff,
+        0 0 60px #00fff7;
       outline: none;
     }
 
     /* Footer */
     footer {
       text-align: center;
-      padding: 2rem 1rem;
-      color: #777777;
+      padding: 1.5rem 1rem;
+      color: #003333aa;
+      font-family: 'Share Tech Mono', monospace;
       font-size: 0.9rem;
       user-select: none;
+      border-top: 1px solid #00333366;
     }
 
-    /* Animations */
-    @keyframes fadeInUp {
+    /* Animated Grid Background */
+    #grid-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        linear-gradient(#004c4c 1px, transparent 1px),
+        linear-gradient(90deg, #004c4c 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridMove 15s linear infinite;
+    }
+    @keyframes gridMove {
       from {
-        opacity: 0;
-        transform: translateY(20px);
+        background-position: 0 0, 0 0;
       }
       to {
-        opacity: 1;
-        transform: translateY(0);
+        background-position: 40px 40px, 40px 40px;
       }
     }
-    .fade-in-up {
-      animation: fadeInUp 0.8s ease forwards;
+
+    /* Scroll Reveal Animation */
+    .reveal {
       opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease-out;
     }
-    .delay-1 {
-      animation-delay: 0.3s;
-    }
-    .delay-2 {
-      animation-delay: 0.6s;
-    }
-    .delay-3 {
-      animation-delay: 0.9s;
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
     }
 
-    /* Responsive tweaks */
+    /* Custom Neon Cursor */
+    #cursor {
+      position: fixed;
+      top: 0; left: 0;
+      width: 24px;
+      height: 24px;
+      border: 2px solid #00fff7;
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      mix-blend-mode: difference;
+      z-index: 9999;
+      user-select: none;
+    }
+    #cursor.active {
+      background-color: #00fff7;
+      transform: translate(-50%, -50%) scale(1.6);
+      box-shadow:
+        0 0 12px #00fff7,
+        0 0 25px #0ff;
+    }
+
+    /* Responsive */
     @media (max-width: 600px) {
       .hero h1 {
         font-size: 2.2rem;
@@ -288,104 +436,190 @@
         margin-left: 1rem;
         font-size: 0.9rem;
       }
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      .container {
+        padding: 3rem 1rem;
+      }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="container nav-wrapper">
-    <div class="logo" tabindex="0">Pulitha Adhikari</div>
-    <nav aria-label="Primary navigation">
-      <a href="#about" class="active" tabindex="0">About</a>
-      <a href="#projects" tabindex="0">Projects</a>
-      <a href="#contact" tabindex="0">Contact</a>
+  <div id="grid-bg" aria-hidden="true"></div>
+
+  <header role="banner">
+    <div class="logo" tabindex="0" aria-label="Portfolio logo">PULITHA ADHIKARI</div>
+    <nav role="navigation" aria-label="Primary navigation">
+      <a href="#about" class="active" tabindex="0">ABOUT</a>
+      <a href="#projects" tabindex="0">PROJECTS</a>
+      <a href="#contact" tabindex="0">CONTACT</a>
+      <button id="sound-toggle" aria-pressed="false" aria-label="Toggle ambient sound" title="Toggle ambient sound" style="background:none;border:none;cursor:pointer;outline:none;color:#00fff7;font-size:1.3rem; margin-left: 1rem; user-select:none;">
+        🔈
+      </button>
     </nav>
-  </div>
-</header>
+  </header>
 
-<main class="container">
-  <section class="hero fade-in-up">
-    <h1>Hello, I’m Pulitha Adhikari.</h1>
-    <p>A passionate developer creating clean and user-friendly web experiences.</p>
-    <a href="#projects" class="btn-primary" tabindex="0">View My Work</a>
-  </section>
+  <main class="container" role="main">
+    <section id="hero" class="hero" tabindex="0" aria-label="Introduction">
+      <h1 class="neon-text">WELCOME TO MY CYBER GRID</h1>
+      <p>Hi, I'm Pulitha Adhikari — crafting futuristic, sleek web experiences.</p>
+      <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=250&q=80" alt="Futuristic neon portrait" />
+      <a href="#projects" class="btn-neon" tabindex="0" id="view-projects-btn">Explore Projects</a>
+    </section>
 
-  <section id="about" class="fade-in-up delay-1" tabindex="0">
-    <h2>About Me</h2>
-    <p class="about-text">
-      I’m a full-stack developer with a keen eye for detail and a love for minimalistic design. 
-      I build websites and apps that are not only functional but also visually appealing and accessible to everyone. 
-      With a background in both design and development, I bridge the gap between creativity and code.
-    </p>
-  </section>
+    <section id="about" class="reveal" tabindex="0" aria-label="About me">
+      <h2>About Me</h2>
+      <p>
+        I am a developer passionate about merging technology with futuristic design. 
+        My work revolves around creating neon-lit interfaces with smooth animations, intuitive interactions, and immersive user experiences.
+      </p>
+    </section>
 
-  <section id="projects" class="fade-in-up delay-2" tabindex="0">
-    <h2>Projects</h2>
-    <div class="projects-grid" role="list">
-      <article class="project-card" role="listitem" tabindex="0" aria-label="Project 1: Portfolio Website">
-        <img src="https://images.unsplash.com/photo-1506765515384-028b60a970df?auto=format&fit=crop&w=600&q=80" alt="Screenshot of Portfolio Website" />
-        <h3>Portfolio Website</h3>
-        <p>A clean, responsive personal portfolio to showcase my skills and projects.</p>
-        <a class="project-link" href="#" tabindex="0" aria-label="View Portfolio Website project">View Project</a>
-      </article>
-      <article class="project-card" role="listitem" tabindex="0" aria-label="Project 2: Task Manager App">
-        <img src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=600&q=80" alt="Screenshot of Task Manager App" />
-        <h3>Task Manager App</h3>
-        <p>A sleek app for managing daily tasks and boosting productivity.</p>
-        <a class="project-link" href="#" tabindex="0" aria-label="View Task Manager App project">View Project</a>
-      </article>
-      <article class="project-card" role="listitem" tabindex="0" aria-label="Project 3: Blog Platform">
-        <img src="https://images.unsplash.com/photo-1523475496153-3b40d1cbabf9?auto=format&fit=crop&w=600&q=80" alt="Screenshot of Blog Platform" />
-        <h3>Blog Platform</h3>
-        <p>A minimalistic platform for sharing thoughts and articles with a community.</p>
-        <a class="project-link" href="#" tabindex="0" aria-label="View Blog Platform project">View Project</a>
-      </article>
-    </div>
-  </section>
+    <section id="projects" class="reveal" tabindex="0" aria-label="Projects showcase">
+      <h2>Projects</h2>
+      <div class="projects-grid" role="list">
+        <article class="project-card" role="listitem" tabindex="0" aria-label="Neon Portfolio Website project">
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80" alt="Screenshot of Neon Portfolio Website" />
+          <div class="project-content">
+            <h3>Neon Portfolio Website</h3>
+            <p>A sleek, neon-themed portfolio to showcase futuristic designs and code.</p>
+            <a href="#" class="project-link" tabindex="0">View Project</a>
+          </div>
+        </article>
+        <article class="project-card" role="listitem" tabindex="0" aria-label="Cyber Task Manager project">
+          <img src="https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=format&fit=crop&w=600&q=80" alt="Screenshot of Cyber Task Manager App" />
+          <div class="project-content">
+            <h3>Cyber Task Manager</h3>
+            <p>An ultra-modern task manager with neon UI and seamless interactions.</p>
+            <a href="#" class="project-link" tabindex="0">View Project</a>
+          </div>
+        </article>
+        <article class="project-card" role="listitem" tabindex="0" aria-label="Futuristic Chatbot project">
+          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80" alt="Screenshot of Futuristic Chatbot" />
+          <div class="project-content">
+            <h3>Futuristic Chatbot</h3>
+            <p>An AI-powered chatbot with a sleek neon interface and real-time responses.</p>
+            <a href="#" class="project-link" tabindex="0">View Project</a>
+          </div>
+        </article>
+      </div>
+    </section>
 
-  <section id="contact" class="fade-in-up delay-3" tabindex="0">
-    <h2>Contact Me</h2>
-    <form aria-label="Contact form">
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name" placeholder="Your full name" required />
+    <section id="contact" class="reveal" tabindex="0" aria-label="Contact form">
+      <h2>Contact Me</h2>
+      <form id="contact-form" aria-live="polite" aria-describedby="form-status">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your full name" required autocomplete="name" />
+        
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="your.email@example.com" required autocomplete="email" />
+        
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" placeholder="Your message..." required></textarea>
+        
+        <button type="submit" aria-label="Send message">Send</button>
+        <p id="form-status" role="alert" aria-live="assertive" style="margin-top: 1rem;"></p>
+      </form>
+    </section>
+  </main>
 
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" placeholder="your.email@example.com" required />
+  <footer role="contentinfo" tabindex="0">
+    &copy; 2025 Pulitha Adhikari &nbsp;&bull;&nbsp; Crafted with <span aria-label="love">❤️</span> in Sri Lanka
+  </footer>
 
-      <label for="message">Message</label>
-      <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+  <!-- Custom Cursor -->
+  <div id="cursor" aria-hidden="true"></div>
 
-      <button type="submit">Send Message</button>
-    </form>
-  </section>
-</main>
+  <!-- Sound Effects -->
+  <audio id="click-sound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
+  <audio id="ambient-sound" src="https://cdn.pixabay.com/download/audio/2022/04/17/audio_3e98e1e34f.mp3?filename=space-ambient-10679.mp3" preload="auto" loop></audio>
 
-<footer>
-  &copy; 2025 Pulitha Adhikari. All rights reserved.
-</footer>
+  <script>
+    // Cursor
+    const cursor = document.getElementById('cursor');
 
-<script>
-  // Smooth scroll for navigation links
-  document.querySelectorAll('nav a').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      const targetID = link.getAttribute('href').substring(1);
-      document.getElementById(targetID).scrollIntoView({ behavior: 'smooth' });
-
-      // Update active class
-      document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-      link.classList.add('active');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
     });
-  });
+    const interactiveElements = 'a, button, input, textarea, .btn-neon, .project-card';
+    document.querySelectorAll(interactiveElements).forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
+    });
 
-  // Basic form submission (for demo only)
-  document.querySelector('form').addEventListener('submit', e => {
-    e.preventDefault();
-    alert('Thanks for reaching out! I will get back to you soon.');
-    e.target.reset();
-  });
-</script>
+    // Scroll Reveal
+    const revealElements = document.querySelectorAll('.reveal');
+    function revealOnScroll() {
+      const triggerBottom = window.innerHeight * 0.85;
+      revealElements.forEach(el => {
+        const boxTop = el.getBoundingClientRect().top;
+        if (boxTop < triggerBottom) {
+          el.classList.add('visible');
+        }
+      });
+    }
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll();
 
+    // Play click sound on buttons and links
+    const clickSound = document.getElementById('click-sound');
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('click', () => {
+        clickSound.currentTime = 0;
+        clickSound.play();
+      });
+    });
+
+    // Ambient sound toggle
+    const ambientSound = document.getElementById('ambient-sound');
+    const soundToggle = document.getElementById('sound-toggle');
+    soundToggle.addEventListener('click', () => {
+      if (ambientSound.paused) {
+        ambientSound.play();
+        soundToggle.textContent = '🔊';
+        soundToggle.setAttribute('aria-pressed', 'true');
+      } else {
+        ambientSound.pause();
+        soundToggle.textContent = '🔈';
+        soundToggle.setAttribute('aria-pressed', 'false');
+      }
+    });
+
+    // Contact form submission (dummy)
+    const form = document.getElementById('contact-form');
+    const formStatus = document.getElementById('form-status');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      formStatus.textContent = 'Sending...';
+
+      // Simulate sending
+      setTimeout(() => {
+        formStatus.textContent = 'Message sent successfully! Thank you!';
+        form.reset();
+      }, 1500);
+    });
+
+    // Highlight nav links on scroll
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('nav a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 80;
+        if (pageYOffset >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current)) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
 </body>
 </html>
