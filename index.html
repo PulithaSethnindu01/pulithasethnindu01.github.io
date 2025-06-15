@@ -63,6 +63,54 @@
       overflow: hidden;
       min-height: 1.5em;
     }
+
+    /* Ruler bar */
+    .ruler-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 2;
+      cursor: grab;
+    }
+
+    .ruler {
+      display: flex;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      transition: none;
+      user-select: none;
+    }
+
+    .tick {
+      width: 10px;
+      height: 100%;
+      border-left: 1px solid white;
+      position: relative;
+    }
+
+    .tick::after {
+      content: attr(data-label);
+      position: absolute;
+      top: 20px;
+      left: -5px;
+      color: white;
+      font-size: 10px;
+    }
+
+    .tick:nth-child(5n)::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      height: 20px;
+      width: 1px;
+      background: white;
+    }
   </style>
 </head>
 <body>
@@ -74,14 +122,19 @@
     <div class="typing" id="typing"></div>
   </div>
 
+  <div class="ruler-container" id="ruler-container">
+    <div class="ruler" id="ruler"></div>
+  </div>
+
   <script>
+    // Blur tracking
     const blurLayer = document.getElementById('blur-layer');
     document.addEventListener('mousemove', (e) => {
       blurLayer.style.setProperty('--x', `${e.clientX}px`);
       blurLayer.style.setProperty('--y', `${e.clientY}px`);
     });
 
-    // Typing effect logic
+    // Typing effect
     const roles = [
       "Graphic Designer",
       "Web Developer",
@@ -105,7 +158,7 @@
 
       if (!isDeleting && charIndex === current.length + 1) {
         isDeleting = true;
-        setTimeout(typeEffect, 1000); // Pause before deleting
+        setTimeout(typeEffect, 1000);
         return;
       }
 
@@ -117,8 +170,42 @@
       setTimeout(typeEffect, isDeleting ? 50 : 100);
     }
 
-    // Start typing
     typeEffect();
+
+    // Ruler generation
+    const ruler = document.getElementById("ruler");
+    for (let i = 0; i < 200; i++) {
+      const tick = document.createElement("div");
+      tick.className = "tick";
+      tick.setAttribute("data-label", i % 5 === 0 ? i : "");
+      ruler.appendChild(tick);
+    }
+
+    // Dragging logic
+    let isDragging = false;
+    let startX = 0;
+    let scrollLeft = 0;
+
+    const rulerContainer = document.getElementById("ruler-container");
+
+    rulerContainer.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      startX = e.pageX - ruler.offsetLeft;
+      rulerContainer.style.cursor = "grabbing";
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      rulerContainer.style.cursor = "grab";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      const x = e.pageX;
+      const walk = x - startX;
+      ruler.style.left = `${walk}px`;
+    });
   </script>
 </body>
 </html>
