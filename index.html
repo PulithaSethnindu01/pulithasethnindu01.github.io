@@ -1,358 +1,475 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pulitha Adhikari — Portfolio</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pulitha Adhikari — Immersive Portfolio</title>
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
-  <style>
-    /* Reset & Base */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html {
-      scroll-behavior: smooth;
-      font-family: 'Inter', sans-serif;
-      background: #f9fafb;
-      color: #333;
-      line-height: 1.6;
-    }
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+  /* Reset */
+  *, *::before, *::after {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
 
-    /* Container */
-    main {
-      flex-grow: 1;
-      max-width: 900px;
-      margin: 2rem auto 4rem;
-      padding: 0 1rem;
-    }
+  body, html {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    background: #111;
+    color: #eee;
+  }
 
-    /* Header & Navigation */
-    header {
-      background: #fff;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      padding: 1rem 2rem;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    header h1 {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: #111;
-    }
-    nav a {
-      color: #555;
-      text-decoration: none;
-      font-weight: 600;
-      margin-left: 2rem;
-      position: relative;
-      transition: color 0.3s ease;
-    }
-    nav a:hover,
-    nav a.active {
-      color: #1a73e8;
-    }
-    nav a.active::after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 2px;
-      background: #1a73e8;
-      bottom: -4px;
-      left: 0;
-      border-radius: 2px;
-    }
+  /* Background video fullscreen */
+  #bg-video {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+    filter: brightness(0.4);
+  }
 
-    /* Section Titles */
-    section h2 {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: #222;
-    }
+  /* Overlay gradient on top */
+  #overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, rgba(26, 115, 232, 0.6), rgba(104, 33, 122, 0.8));
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 0;
+  }
 
-    /* Intro */
-    #intro {
-      text-align: center;
-      margin-bottom: 4rem;
-    }
-    #intro h2 {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-      color: #1a73e8;
-    }
-    #intro p {
-      font-size: 1.125rem;
-      color: #555;
-      max-width: 600px;
-      margin: 0 auto;
-    }
+  /* Sticky translucent header */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    backdrop-filter: blur(8px);
+    background: rgba(20,20,20,0.6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 3rem;
+    z-index: 10;
+  }
+  header h1 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #00d6ff;
+    letter-spacing: 1.2px;
+  }
+  nav a {
+    color: #eee;
+    font-weight: 600;
+    margin-left: 2rem;
+    text-decoration: none;
+    position: relative;
+    padding: 0.3rem 0;
+    transition: color 0.3s ease;
+  }
+  nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0%;
+    height: 2px;
+    background: #00d6ff;
+    transition: width 0.3s ease;
+  }
+  nav a:hover,
+  nav a.active {
+    color: #00d6ff;
+  }
+  nav a:hover::after,
+  nav a.active::after {
+    width: 100%;
+  }
 
-    /* Projects Grid */
-    #projects {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
-    }
-    .project-card {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .project-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 6px 18px rgba(26, 115, 232, 0.2);
-    }
-    .project-card img {
-      width: 100%;
-      object-fit: cover;
-      height: 180px;
-    }
-    .project-content {
-      padding: 1rem 1.25rem;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    .project-content h3 {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-      font-size: 1.25rem;
-      margin-bottom: 0.5rem;
-      color: #111;
-    }
-    .project-content p {
-      flex-grow: 1;
-      font-size: 0.95rem;
-      color: #666;
-      margin-bottom: 1rem;
-    }
-    .project-link {
-      align-self: flex-start;
-      font-weight: 600;
-      color: #1a73e8;
-      text-decoration: none;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.3s ease;
-    }
-    .project-link:hover {
-      border-color: #1a73e8;
-    }
+  /* Hero section */
+  #hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+  }
 
-    /* Contact Form */
-    #contact {
-      background: #fff;
-      padding: 2rem 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-      max-width: 600px;
-      margin: 3rem auto 0;
-    }
-    #contact form {
-      display: flex;
-      flex-direction: column;
-    }
-    #contact label {
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: #333;
-    }
-    #contact input,
-    #contact textarea {
-      font-family: inherit;
-      padding: 0.75rem 1rem;
-      margin-bottom: 1.5rem;
-      border: 1.5px solid #ddd;
-      border-radius: 6px;
-      font-size: 1rem;
-      transition: border-color 0.3s ease;
-      resize: vertical;
-    }
-    #contact input:focus,
-    #contact textarea:focus {
-      outline: none;
-      border-color: #1a73e8;
-      box-shadow: 0 0 5px rgba(26,115,232,0.4);
-    }
-    #contact button {
-      background: #1a73e8;
-      color: #fff;
-      font-weight: 700;
-      border: none;
-      border-radius: 6px;
-      padding: 1rem 1.5rem;
-      font-size: 1.125rem;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      align-self: flex-start;
-    }
-    #contact button:hover {
-      background: #155ab6;
-    }
-    #form-status {
-      font-weight: 600;
-      color: #1a73e8;
-      min-height: 1.5em;
-    }
+  #hero h2 {
+    font-size: 4.5vw;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
+    margin-bottom: 0.5rem;
+    color: #00d6ff;
+    opacity: 0;
+    animation: fadeInUp 1.4s ease forwards 0.6s;
+  }
 
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      font-size: 0.9rem;
-      color: #777;
-      border-top: 1px solid #eee;
-      font-family: 'Inter', sans-serif;
-      user-select: none;
-    }
+  #hero .typed-text {
+    font-size: 2.4vw;
+    font-weight: 600;
+    color: #f0f0f0;
+    height: 36px;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeInUp 1.4s ease forwards 1.2s;
+  }
 
-    /* Animations: fade-in and slide-up */
-    .fade-slide {
+  #hero .scroll-hint {
+    color: #00d6ff;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.8;
+    position: absolute;
+    bottom: 40px;
+    animation: pulse 2s infinite ease-in-out;
+    cursor: default;
+  }
+
+  /* Projects Section */
+  #projects {
+    padding: 6rem 3rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    color: #eee;
+  }
+  #projects h3 {
+    font-size: 2.6rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    color: #00d6ff;
+    text-align: center;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+    gap: 2rem;
+  }
+
+  .project-card {
+    background: #222;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 0 16px rgba(0,214,255,0.3);
+    transition: transform 0.3s ease, box-shadow 0.4s ease;
+  }
+  .project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 30px rgba(0,214,255,0.7);
+  }
+  .project-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+  .project-info {
+    padding: 1.25rem 1.5rem;
+  }
+  .project-info h4 {
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+  }
+  .project-info p {
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: #ccc;
+    margin-bottom: 1rem;
+  }
+  .project-info a {
+    color: #00d6ff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  .project-info a:hover {
+    text-decoration: underline;
+  }
+
+  /* Contact Section */
+  #contact {
+    background: #111;
+    padding: 4rem 3rem;
+    text-align: center;
+    color: #eee;
+  }
+  #contact h3 {
+    font-size: 2.6rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: #00d6ff;
+  }
+  #contact form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+  #contact label {
+    text-align: left;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  #contact input,
+  #contact textarea {
+    padding: 0.9rem 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    border: none;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+  }
+  #contact input:focus,
+  #contact textarea:focus {
+    outline: none;
+    box-shadow: 0 0 8px #00d6ff;
+  }
+  #contact textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+  #contact button {
+    background: #00d6ff;
+    border: none;
+    border-radius: 8px;
+    color: #111;
+    font-weight: 700;
+    font-size: 1.2rem;
+    padding: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  #contact button:hover {
+    background: #007bbd;
+  }
+  #form-status {
+    margin-top: 1rem;
+    font-weight: 600;
+    color: #00d6ff;
+    min-height: 1.4em;
+  }
+
+  /* Footer */
+  footer {
+    background: #111;
+    padding: 1.5rem 3rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #777;
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    0% {
       opacity: 0;
-      transform: translateY(15px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: translateY(25px);
     }
-    .fade-slide.visible {
+    100% {
       opacity: 1;
       transform: translateY(0);
     }
-  </style>
+  }
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.8;
+      transform: translateY(0);
+    }
+    50% {
+      opacity: 0.3;
+      transform: translateY(6px);
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    #hero h2 {
+      font-size: 8vw;
+    }
+    #hero .typed-text {
+      font-size: 4vw;
+    }
+    header {
+      padding: 0 1.5rem;
+    }
+    nav a {
+      margin-left: 1rem;
+      font-size: 0.9rem;
+    }
+  }
+</style>
 </head>
 <body>
 
-  <header role="banner">
+  <!-- Background video (replace src with your own or free stock) -->
+  <video autoplay muted loop playsinline id="bg-video" aria-hidden="true">
+    <source src="https://cdn.videvo.net/videvo_files/video/free/2018-07/small_watermarked/180630_04_SciFi_Looping_1080p_001_preview.webm" type="video/webm" />
+    <source src="https://cdn.videvo.net/videvo_files/video/free/2018-07/small_watermarked/180630_04_SciFi_Looping_1080p_001_preview.mp4" type="video/mp4" />
+    <!-- fallback image if video not supported -->
+  </video>
+
+  <!-- Gradient overlay -->
+  <div id="overlay" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header role="banner" aria-label="Primary navigation">
     <h1>Pulitha Adhikari</h1>
-    <nav role="navigation" aria-label="Primary navigation">
-      <a href="#intro" class="active">Home</a>
+    <nav>
+      <a href="#hero" class="active">Home</a>
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <main>
-    <section id="intro" class="fade-slide" tabindex="0" aria-label="Introduction">
-      <h2>Hello, I'm Pulitha</h2>
-      <p>Experienced web developer crafting clean, modern websites with attention to detail and usability. Welcome to my portfolio!</p>
-    </section>
+  <!-- Hero -->
+  <section id="hero" role="region" aria-label="Introduction">
+    <h2>WELCOME TO MY PORTFOLIO</h2>
+    <div class="typed-text" aria-live="polite"></div>
+    <div class="scroll-hint" aria-hidden="true">SCROLL DOWN</div>
+  </section>
 
-    <section id="projects" class="fade-slide" tabindex="0" aria-label="My projects">
-      <h2>Projects</h2>
-      <div class="project-list" role="list">
-        <article class="project-card" role="listitem" tabindex="0" aria-label="Portfolio Website project">
-          <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80" alt="Screenshot of Portfolio Website" />
-          <div class="project-content">
-            <h3>Portfolio Website</h3>
-            <p>A modern portfolio website built with HTML, CSS, and JavaScript focusing on performance and accessibility.</p>
-            <a href="#" class="project-link" tabindex="0">View Project</a>
-          </div>
-        </article>
-        <article class="project-card" role="listitem" tabindex="0" aria-label="E-commerce Platform project">
-          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80" alt="Screenshot of E-commerce Platform" />
-          <div class="project-content">
-            <h3>E-commerce Platform</h3>
-            <p>Responsive online store with smooth checkout experience and intuitive UI.</p>
-            <a href="#" class="project-link" tabindex="0">View Project</a>
-          </div>
-        </article>
-        <article class="project-card" role="listitem" tabindex="0" aria-label="Futuristic Chatbot project">
-          <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80" alt="Screenshot of Futuristic Chatbot" />
-          <div class="project-content">
-            <h3>Futuristic Chatbot</h3>
-            <p>An AI-powered chatbot with a sleek modern interface and real-time responses.</p>
-            <a href="#" class="project-link" tabindex="0">View Project</a>
-          </div>
-        </article>
-      </div>
-    </section>
+  <!-- Projects -->
+  <section id="projects" role="region" aria-label="Projects showcase">
+    <h3>My Projects</h3>
+    <div class="projects-grid" role="list">
+      <article class="project-card" role="listitem" tabindex="0">
+        <img class="project-image" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80" alt="Portfolio Website screenshot" />
+        <div class="project-info">
+          <h4>Portfolio Website</h4>
+          <p>Modern website focused on performance and accessibility.</p>
+          <a href="#" aria-label="View Portfolio Website project">View Project</a>
+        </div>
+      </article>
 
-    <section id="contact" class="fade-slide" tabindex="0" aria-label="Contact form">
-      <h2>Contact Me</h2>
-      <form id="contact-form" aria-live="polite" aria-describedby="form-status">
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" placeholder="Your full name" required autocomplete="name" />
-        
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="your.email@example.com" required autocomplete="email" />
-        
-        <label for="message">Message</label>
-        <textarea id="message" name="message" rows="5" placeholder="Your message..." required></textarea>
-        
-        <button type="submit" aria-label="Send message">Send</button>
-        <p id="form-status" role="alert" aria-live="assertive"></p>
-      </form>
-    </section>
-  </main>
+      <article class="project-card" role="listitem" tabindex="0">
+        <img class="project-image" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80" alt="E-commerce Platform screenshot" />
+        <div class="project-info">
+          <h4>E-commerce Platform</h4>
+          <p>Responsive online store with smooth checkout experience.</p>
+          <a href="#" aria-label="View E-commerce Platform project">View Project</a>
+        </div>
+      </article>
 
-  <footer role="contentinfo" tabindex="0">
+      <article class="project-card" role="listitem" tabindex="0">
+        <img class="project-image" src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80" alt="Futuristic Chatbot screenshot" />
+        <div class="project-info">
+          <h4>Futuristic Chatbot</h4>
+          <p>AI-powered chatbot with real-time responses and sleek UI.</p>
+          <a href="#" aria-label="View Futuristic Chatbot project">View Project</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" role="region" aria-label="Contact form">
+    <h3>Get in Touch</h3>
+    <form id="contact-form" aria-live="polite" aria-describedby="form-status">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Your full name" required autocomplete="name" />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="your.email@example.com" required autocomplete="email" />
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" placeholder="Your message..." required></textarea>
+
+      <button type="submit" aria-label="Send message">Send</button>
+      <p id="form-status" role="alert" aria-live="assertive"></p>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
     &copy; 2025 Pulitha Adhikari &nbsp;&bull;&nbsp; Crafted with <span aria-label="love">❤️</span> in Sri Lanka
   </footer>
 
-  <script>
-    // Scroll reveal animation
-    const fadeElements = document.querySelectorAll('.fade-slide');
-    function revealOnScroll() {
-      const triggerPoint = window.innerHeight * 0.85;
-      fadeElements.forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        if (top < triggerPoint) {
-          el.classList.add('visible');
-        }
-      });
+<script>
+  // Typed text effect
+  const phrases = [
+    "Web Developer",
+    "Creative Coder",
+    "UI/UX Enthusiast",
+    "Open Source Contributor",
+    "Tech Explorer"
+  ];
+  let currentPhrase = 0;
+  let currentChar = 0;
+  const typedTextEl = document.querySelector(".typed-text");
+  const typingSpeed = 100;
+  const erasingSpeed = 50;
+  const delayBetween = 1500;
+
+  function type() {
+    if (currentChar < phrases[currentPhrase].length) {
+      typedTextEl.textContent += phrases[currentPhrase].charAt(currentChar);
+      currentChar++;
+      setTimeout(type, typingSpeed);
+    } else {
+      setTimeout(erase, delayBetween);
     }
-    window.addEventListener('scroll', revealOnScroll);
-    revealOnScroll();
+  }
+  function erase() {
+    if (currentChar > 0) {
+      typedTextEl.textContent = phrases[currentPhrase].substring(0, currentChar - 1);
+      currentChar--;
+      setTimeout(erase, erasingSpeed);
+    } else {
+      currentPhrase++;
+      if (currentPhrase >= phrases.length) currentPhrase = 0;
+      setTimeout(type, typingSpeed + 500);
+    }
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(type, 1000);
+  });
 
-    // Highlight nav links on scroll
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('nav a');
-    window.addEventListener('scroll', () => {
-      let current = '';
-      sections.forEach(section => {
-        const sectionTop = section.offsetTop - 80;
-        if (pageYOffset >= sectionTop) {
-          current = section.getAttribute('id');
-        }
-      });
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href').includes(current)) {
-          link.classList.add('active');
-        }
-      });
+  // Nav link active switching on scroll
+  const sections = document.querySelectorAll("section");
+  const navLinks = document.querySelectorAll("nav a");
+  window.addEventListener("scroll", () => {
+    let current = "";
+    sections.forEach((section) => {
+      const sectionTop = section.offsetTop - 80;
+      if (pageYOffset >= sectionTop) {
+        current = section.getAttribute("id");
+      }
     });
-
-    // Contact form submission (dummy)
-    const form = document.getElementById('contact-form');
-    const formStatus = document.getElementById('form-status');
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      formStatus.textContent = 'Sending...';
-
-      // Simulate sending
-      setTimeout(() => {
-        formStatus.textContent = 'Message sent successfully! Thank you!';
-        form.reset();
-      }, 1500);
+    navLinks.forEach((link) => {
+      link.classList.remove("active");
+      if (link.getAttribute("href") === "#" + current) {
+        link.classList.add("active");
+      }
     });
-  </script>
+  });
+
+  // Contact form simulation
+  const form = document.getElementById("contact-form");
+  const formStatus = document.getElementById("form-status");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    formStatus.textContent = "Sending...";
+    setTimeout(() => {
+      formStatus.textContent = "Message sent successfully! Thank you!";
+      form.reset();
+    }, 1800);
+  });
+</script>
+
 </body>
 </html>
