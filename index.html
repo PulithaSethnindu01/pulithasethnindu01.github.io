@@ -24,6 +24,7 @@
       height: 100%;
       background: url('https://wallpapershome.com/images/pages/pic_h/26426.jpg') no-repeat center center/cover;
       z-index: -2;
+      transition: background-image 0.5s ease;
     }
 
     .blur-layer {
@@ -33,7 +34,7 @@
       backdrop-filter: blur(12px);
       z-index: -1;
       pointer-events: none;
-      mask: radial-gradient(circle 100px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
+      mask: radial-gradient(circle 250px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
       -webkit-mask: radial-gradient(circle 250px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
       transition: mask 0.2s ease, -webkit-mask 0.2s ease;
     }
@@ -124,28 +125,10 @@
       font-size: 10px;
       color: white;
     }
-
-    /* Added style for drag label */
-    #drag-label {
-      position: fixed;
-      pointer-events: none;
-      color: white;
-      font-weight: bold;
-      background: rgba(0,0,0,0.6);
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      font-size: 12px;
-      user-select: none;
-      z-index: 10;
-      transform: translate(-50%, -150%);
-      white-space: nowrap;
-      display: none;
-    }
   </style>
 </head>
 <body>
-  <div class="background"></div>
+  <div class="background" id="background"></div>
   <div class="blur-layer" id="blur-layer"></div>
 
   <div class="content">
@@ -161,9 +144,6 @@
       <div class="ruler" id="ruler"></div>
     </div>
   </div>
-
-  <!-- Drag label -->
-  <div id="drag-label">drag</div>
 
   <script>
     const blurLayer = document.getElementById('blur-layer');
@@ -214,12 +194,13 @@
     }
 
     const container = document.getElementById("ruler-container");
+    const background = document.getElementById("background");
     let isDragging = false;
     let startX = 0;
     let deltaX = 0;
     let inAbout = false;
 
-    // ✅ Start ruler at +250px (Home)
+    // Start ruler at +250px (Home)
     ruler.style.transform = `translateX(calc(-50% + 250px))`;
 
     container.addEventListener("mousedown", (e) => {
@@ -252,6 +233,7 @@
         document.getElementById("about-text").style.display = "block";
         typingPaused = true;
         inAbout = true;
+        background.style.backgroundImage = "url('https://i.pinimg.com/736x/d6/13/33/d613331cc0fd432e00e1d12de09fa131.jpg')";
       } else if (inAbout && deltaX > 200) {
         // Switch back to Home
         ruler.style.transform = `translateX(calc(-50% + 250px))`;
@@ -261,6 +243,7 @@
         typingPaused = false;
         typeEffect();
         inAbout = false;
+        background.style.backgroundImage = "url('https://wallpapershome.com/images/pages/pic_h/26426.jpg')";
       } else {
         // Stay in current view
         if (inAbout) {
@@ -269,22 +252,6 @@
           ruler.style.transform = `translateX(calc(-50% + 250px))`;
         }
       }
-    });
-
-    // New: Show 'drag' label on hover over ruler container
-    const dragLabel = document.getElementById('drag-label');
-
-    container.addEventListener('mouseenter', () => {
-      dragLabel.style.display = 'block';
-    });
-
-    container.addEventListener('mouseleave', () => {
-      dragLabel.style.display = 'none';
-    });
-
-    container.addEventListener('mousemove', (e) => {
-      dragLabel.style.left = `${e.clientX}px`;
-      dragLabel.style.top = `${e.clientY}px`;
     });
   </script>
 </body>
