@@ -15,7 +15,7 @@
       height: 100%;
       overflow: hidden;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      cursor: none; /* Hide default cursor for better effect */
+      cursor: default;
     }
 
     .background {
@@ -49,7 +49,6 @@
       color: white;
       text-align: center;
       text-shadow: 0 0 10px rgba(0,0,0,0.7);
-      pointer-events: none;
     }
 
     h1 {
@@ -57,9 +56,22 @@
       margin-bottom: 0.3em;
     }
 
-    p {
+    .typing {
       font-size: 1.2em;
-      max-width: 80%;
+      border-right: 2px solid white;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+      animation: typing 4s steps(30, end) forwards, blink 0.7s step-end infinite;
+    }
+
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 23ch }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
     }
   </style>
 </head>
@@ -69,7 +81,7 @@
 
   <div class="content">
     <h1>Pulitha Sethnindu</h1>
-    <p>Creative Developer | Designer | Tech Explorer</p>
+    <div class="typing">Creative Developer | Tech Explorer</div>
   </div>
 
   <script>
