@@ -1,498 +1,275 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pulitha Adhikari | Neon Cyber Grid Portfolio</title>
-  
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-  
+  <title>Pulitha Adhikari — Portfolio</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+
   <style>
-    /* Base Reset */
+    /* Reset & Base */
     * {
-      margin: 0; padding: 0; box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+      font-family: 'Inter', sans-serif;
+      background: #f9fafb;
+      color: #333;
+      line-height: 1.6;
     }
     body {
-      font-family: 'Share Tech Mono', monospace;
-      background: #010014;
-      color: #00fff7;
-      overflow-x: hidden;
-      cursor: none;
-      user-select: none;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      min-height: 100vh;
-      scroll-behavior: smooth;
-    }
-
-    /* Neon Glow Text */
-    .neon-text {
-      color: #00fff7;
-      text-shadow:
-         0 0 5px #00fff7,
-         0 0 10px #00fff7,
-         0 0 20px #00fff7,
-         0 0 40px #0ff,
-         0 0 80px #0ff;
-    }
-
-    /* Neon Button */
-    .btn-neon {
-      padding: 0.75rem 2.5rem;
-      border: 2px solid #00fff7;
-      background: transparent;
-      color: #00fff7;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 700;
-      font-size: 1.15rem;
-      border-radius: 10px;
-      box-shadow:
-        0 0 10px #00fff7,
-        0 0 20px #00fff7;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      user-select: none;
-      margin-top: 1rem;
-      display: inline-block;
-      text-align: center;
-    }
-    .btn-neon:hover,
-    .btn-neon:focus {
-      background: #00fff7;
-      color: #010014;
-      box-shadow:
-        0 0 20px #0ff,
-        0 0 40px #0ff,
-        0 0 60px #0ff,
-        0 0 80px #0ff;
-      outline: none;
     }
 
     /* Container */
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 4rem 1rem;
+    main {
       flex-grow: 1;
-      z-index: 2;
-      position: relative;
+      max-width: 900px;
+      margin: 2rem auto 4rem;
+      padding: 0 1rem;
     }
 
-    /* Header */
+    /* Header & Navigation */
     header {
-      position: fixed;
-      width: 100%;
-      top: 0;
-      left: 0;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       padding: 1rem 2rem;
-      background: rgba(1, 0, 20, 0.85);
-      box-shadow: 0 0 20px #00fff7aa;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 10;
-      user-select: none;
     }
-    header .logo {
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 900;
-      font-size: 1.8rem;
-      color: #00fff7;
-      letter-spacing: 0.2rem;
-      text-transform: uppercase;
+    header h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #111;
     }
     nav a {
-      color: #00fff7;
-      margin-left: 2rem;
-      font-weight: 700;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 1rem;
+      color: #555;
       text-decoration: none;
+      font-weight: 600;
+      margin-left: 2rem;
       position: relative;
       transition: color 0.3s ease;
     }
     nav a:hover,
     nav a.active {
-      color: #0ff;
+      color: #1a73e8;
     }
-    nav a::after {
-      content: '';
+    nav a.active::after {
+      content: "";
       position: absolute;
-      width: 0;
+      width: 100%;
       height: 2px;
-      background: #00fff7;
+      background: #1a73e8;
       bottom: -4px;
       left: 0;
-      transition: width 0.3s ease;
-    }
-    nav a:hover::after,
-    nav a.active::after {
-      width: 100%;
+      border-radius: 2px;
     }
 
-    /* Hero */
-    .hero {
-      padding-top: 8rem;
-      text-align: center;
-      position: relative;
-      overflow: visible;
-    }
-    .hero h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 3.5rem;
-      color: #00fff7;
-      letter-spacing: 0.15em;
-      text-shadow:
-        0 0 10px #00fff7,
-        0 0 20px #00fff7,
-        0 0 40px #0ff;
-      animation: flicker 3s infinite alternate;
-      user-select: none;
-    }
-    @keyframes flicker {
-      0%, 100% { opacity: 1; text-shadow:
-        0 0 10px #00fff7,
-        0 0 20px #00fff7,
-        0 0 40px #0ff;
-      }
-      50% { opacity: 0.85; text-shadow:
-        0 0 6px #00fff7,
-        0 0 12px #00fff7;
-      }
-    }
-    .hero p {
-      margin-top: 1rem;
-      font-size: 1.3rem;
-      color: #00fff7aa;
-      letter-spacing: 0.07em;
-    }
-    .hero img {
-      margin-top: 2rem;
-      width: 250px;
-      border-radius: 20px;
-      box-shadow:
-        0 0 30px #0ff,
-        0 0 60px #00fff7;
-      filter: drop-shadow(0 0 5px #0ff);
-      user-select: none;
-      animation: glowPulse 4s ease-in-out infinite;
-    }
-    @keyframes glowPulse {
-      0%, 100% {
-        box-shadow:
-          0 0 30px #0ff,
-          0 0 60px #00fff7;
-      }
-      50% {
-        box-shadow:
-          0 0 45px #0ff,
-          0 0 90px #00fff7;
-      }
-    }
-
-    /* Sections */
-    section {
-      margin: 6rem 0;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 1s ease;
-    }
-    section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    /* Section Titles */
     section h2 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2.8rem;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
       margin-bottom: 1rem;
-      border-left: 5px solid #00fff7;
-      padding-left: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      user-select: none;
+      color: #222;
     }
-    section p {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      max-width: 720px;
-      color: #00fff7cc;
-      margin-bottom: 2rem;
+
+    /* Intro */
+    #intro {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    #intro h2 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: #1a73e8;
+    }
+    #intro p {
+      font-size: 1.125rem;
+      color: #555;
+      max-width: 600px;
+      margin: 0 auto;
     }
 
     /* Projects Grid */
-    .projects-grid {
+    #projects {
       display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 2rem;
-      max-width: 900px;
     }
     .project-card {
-      background: #020027;
-      border: 2px solid #00fff7;
-      border-radius: 18px;
-      box-shadow:
-        0 0 15px #00fff7;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
       overflow: hidden;
-      cursor: pointer;
       display: flex;
       flex-direction: column;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .project-card:hover {
-      transform: translateY(-10px);
-      box-shadow:
-        0 0 30px #0ff,
-        0 0 60px #00fff7;
+      transform: translateY(-8px);
+      box-shadow: 0 6px 18px rgba(26, 115, 232, 0.2);
     }
     .project-card img {
       width: 100%;
-      height: 140px;
       object-fit: cover;
-      border-bottom: 2px solid #00fff7;
-      user-select: none;
+      height: 180px;
     }
     .project-content {
       padding: 1rem 1.25rem;
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
     }
     .project-content h3 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.5rem;
-      color: #00fff7;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
       margin-bottom: 0.5rem;
-      user-select: none;
+      color: #111;
     }
     .project-content p {
-      color: #00fff799;
-      font-size: 0.95rem;
       flex-grow: 1;
+      font-size: 0.95rem;
+      color: #666;
       margin-bottom: 1rem;
-      user-select: none;
     }
     .project-link {
       align-self: flex-start;
-      color: #0ff;
-      font-weight: 700;
-      font-family: 'Share Tech Mono', monospace;
-      letter-spacing: 0.1em;
+      font-weight: 600;
+      color: #1a73e8;
       text-decoration: none;
-      transition: color 0.3s ease;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.3s ease;
     }
     .project-link:hover {
-      color: #00fff7;
-      text-shadow:
-        0 0 6px #0ff,
-        0 0 10px #00fff7;
+      border-color: #1a73e8;
     }
 
     /* Contact Form */
-    form {
-      background: #020027;
-      border: 2px solid #00fff7;
-      padding: 2rem;
-      border-radius: 18px;
+    #contact {
+      background: #fff;
+      padding: 2rem 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
       max-width: 600px;
-      margin: 0 auto;
-      box-shadow: 0 0 20px #00fff7aa;
+      margin: 3rem auto 0;
     }
-    label {
-      display: block;
+    #contact form {
+      display: flex;
+      flex-direction: column;
+    }
+    #contact label {
+      font-weight: 600;
       margin-bottom: 0.5rem;
-      color: #00fff7cc;
-      font-weight: 700;
-      font-family: 'Share Tech Mono', monospace;
-      user-select: none;
+      color: #333;
     }
-    input[type="text"],
-    input[type="email"],
-    textarea {
-      width: 100%;
+    #contact input,
+    #contact textarea {
+      font-family: inherit;
       padding: 0.75rem 1rem;
-      margin-bottom: 1.25rem;
-      border-radius: 12px;
-      border: 1.5px solid #00fff7;
-      background: #010014;
-      color: #00fff7;
-      font-family: 'Share Tech Mono', monospace;
+      margin-bottom: 1.5rem;
+      border: 1.5px solid #ddd;
+      border-radius: 6px;
       font-size: 1rem;
-      transition: box-shadow 0.3s ease;
+      transition: border-color 0.3s ease;
       resize: vertical;
     }
-    input[type="text"]:focus,
-    input[type="email"]:focus,
-    textarea:focus {
+    #contact input:focus,
+    #contact textarea:focus {
       outline: none;
-      box-shadow:
-        0 0 12px #0ff,
-        0 0 24px #00fff7;
-      border-color: #0ff;
-      background: #010022;
+      border-color: #1a73e8;
+      box-shadow: 0 0 5px rgba(26,115,232,0.4);
     }
-    button[type="submit"] {
-      background: transparent;
-      border: 2px solid #00fff7;
-      color: #00fff7;
-      padding: 1rem 2.5rem;
-      font-family: 'Orbitron', sans-serif;
+    #contact button {
+      background: #1a73e8;
+      color: #fff;
       font-weight: 700;
-      font-size: 1.15rem;
-      border-radius: 12px;
+      border: none;
+      border-radius: 6px;
+      padding: 1rem 1.5rem;
+      font-size: 1.125rem;
       cursor: pointer;
-      box-shadow:
-        0 0 10px #00fff7,
-        0 0 20px #0ff;
-      transition: all 0.3s ease;
-      user-select: none;
-      display: block;
-      margin-top: 0.5rem;
+      transition: background-color 0.3s ease;
+      align-self: flex-start;
     }
-    button[type="submit"]:hover,
-    button[type="submit"]:focus {
-      background: #00fff7;
-      color: #010014;
-      box-shadow:
-        0 0 30px #0ff,
-        0 0 60px #00fff7;
-      outline: none;
+    #contact button:hover {
+      background: #155ab6;
+    }
+    #form-status {
+      font-weight: 600;
+      color: #1a73e8;
+      min-height: 1.5em;
     }
 
     /* Footer */
     footer {
       text-align: center;
       padding: 1.5rem 1rem;
-      color: #003333aa;
-      font-family: 'Share Tech Mono', monospace;
       font-size: 0.9rem;
+      color: #777;
+      border-top: 1px solid #eee;
+      font-family: 'Inter', sans-serif;
       user-select: none;
-      border-top: 1px solid #00333366;
     }
 
-    /* Animated Grid Background */
-    #grid-bg {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      pointer-events: none;
-      z-index: 0;
-      background:
-        linear-gradient(#004c4c 1px, transparent 1px),
-        linear-gradient(90deg, #004c4c 1px, transparent 1px);
-      background-size: 40px 40px;
-      animation: gridMove 15s linear infinite;
-    }
-    @keyframes gridMove {
-      from {
-        background-position: 0 0, 0 0;
-      }
-      to {
-        background-position: 40px 40px, 40px 40px;
-      }
-    }
-
-    /* Scroll Reveal Animation */
-    .reveal {
+    /* Animations: fade-in and slide-up */
+    .fade-slide {
       opacity: 0;
-      transform: translateY(50px);
-      transition: all 0.8s ease-out;
+      transform: translateY(15px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
-    .reveal.visible {
+    .fade-slide.visible {
       opacity: 1;
-      transform: none;
-    }
-
-    /* Custom Neon Cursor */
-    #cursor {
-      position: fixed;
-      top: 0; left: 0;
-      width: 24px;
-      height: 24px;
-      border: 2px solid #00fff7;
-      border-radius: 50%;
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      transition: background-color 0.2s ease, transform 0.1s ease;
-      mix-blend-mode: difference;
-      z-index: 9999;
-      user-select: none;
-    }
-    #cursor.active {
-      background-color: #00fff7;
-      transform: translate(-50%, -50%) scale(1.6);
-      box-shadow:
-        0 0 12px #00fff7,
-        0 0 25px #0ff;
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 2.2rem;
-      }
-      nav a {
-        margin-left: 1rem;
-        font-size: 0.9rem;
-      }
-      .projects-grid {
-        grid-template-columns: 1fr;
-      }
-      .container {
-        padding: 3rem 1rem;
-      }
+      transform: translateY(0);
     }
   </style>
 </head>
 <body>
 
-  <div id="grid-bg" aria-hidden="true"></div>
-
   <header role="banner">
-    <div class="logo" tabindex="0" aria-label="Portfolio logo">PULITHA ADHIKARI</div>
+    <h1>Pulitha Adhikari</h1>
     <nav role="navigation" aria-label="Primary navigation">
-      <a href="#about" class="active" tabindex="0">ABOUT</a>
-      <a href="#projects" tabindex="0">PROJECTS</a>
-      <a href="#contact" tabindex="0">CONTACT</a>
-      <button id="sound-toggle" aria-pressed="false" aria-label="Toggle ambient sound" title="Toggle ambient sound" style="background:none;border:none;cursor:pointer;outline:none;color:#00fff7;font-size:1.3rem; margin-left: 1rem; user-select:none;">
-        🔈
-      </button>
+      <a href="#intro" class="active">Home</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <main class="container" role="main">
-    <section id="hero" class="hero" tabindex="0" aria-label="Introduction">
-      <h1 class="neon-text">WELCOME TO MY CYBER GRID</h1>
-      <p>Hi, I'm Pulitha Adhikari — crafting futuristic, sleek web experiences.</p>
-      <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=250&q=80" alt="Futuristic neon portrait" />
-      <a href="#projects" class="btn-neon" tabindex="0" id="view-projects-btn">Explore Projects</a>
+  <main>
+    <section id="intro" class="fade-slide" tabindex="0" aria-label="Introduction">
+      <h2>Hello, I'm Pulitha</h2>
+      <p>Experienced web developer crafting clean, modern websites with attention to detail and usability. Welcome to my portfolio!</p>
     </section>
 
-    <section id="about" class="reveal" tabindex="0" aria-label="About me">
-      <h2>About Me</h2>
-      <p>
-        I am a developer passionate about merging technology with futuristic design. 
-        My work revolves around creating neon-lit interfaces with smooth animations, intuitive interactions, and immersive user experiences.
-      </p>
-    </section>
-
-    <section id="projects" class="reveal" tabindex="0" aria-label="Projects showcase">
+    <section id="projects" class="fade-slide" tabindex="0" aria-label="My projects">
       <h2>Projects</h2>
-      <div class="projects-grid" role="list">
-        <article class="project-card" role="listitem" tabindex="0" aria-label="Neon Portfolio Website project">
-          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80" alt="Screenshot of Neon Portfolio Website" />
+      <div class="project-list" role="list">
+        <article class="project-card" role="listitem" tabindex="0" aria-label="Portfolio Website project">
+          <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80" alt="Screenshot of Portfolio Website" />
           <div class="project-content">
-            <h3>Neon Portfolio Website</h3>
-            <p>A sleek, neon-themed portfolio to showcase futuristic designs and code.</p>
+            <h3>Portfolio Website</h3>
+            <p>A modern portfolio website built with HTML, CSS, and JavaScript focusing on performance and accessibility.</p>
             <a href="#" class="project-link" tabindex="0">View Project</a>
           </div>
         </article>
-        <article class="project-card" role="listitem" tabindex="0" aria-label="Cyber Task Manager project">
-          <img src="https://images.unsplash.com/photo-1508780709619-79562169bc64?auto=format&fit=crop&w=600&q=80" alt="Screenshot of Cyber Task Manager App" />
+        <article class="project-card" role="listitem" tabindex="0" aria-label="E-commerce Platform project">
+          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=600&q=80" alt="Screenshot of E-commerce Platform" />
           <div class="project-content">
-            <h3>Cyber Task Manager</h3>
-            <p>An ultra-modern task manager with neon UI and seamless interactions.</p>
+            <h3>E-commerce Platform</h3>
+            <p>Responsive online store with smooth checkout experience and intuitive UI.</p>
             <a href="#" class="project-link" tabindex="0">View Project</a>
           </div>
         </article>
@@ -500,14 +277,14 @@
           <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80" alt="Screenshot of Futuristic Chatbot" />
           <div class="project-content">
             <h3>Futuristic Chatbot</h3>
-            <p>An AI-powered chatbot with a sleek neon interface and real-time responses.</p>
+            <p>An AI-powered chatbot with a sleek modern interface and real-time responses.</p>
             <a href="#" class="project-link" tabindex="0">View Project</a>
           </div>
         </article>
       </div>
     </section>
 
-    <section id="contact" class="reveal" tabindex="0" aria-label="Contact form">
+    <section id="contact" class="fade-slide" tabindex="0" aria-label="Contact form">
       <h2>Contact Me</h2>
       <form id="contact-form" aria-live="polite" aria-describedby="form-status">
         <label for="name">Name</label>
@@ -520,7 +297,7 @@
         <textarea id="message" name="message" rows="5" placeholder="Your message..." required></textarea>
         
         <button type="submit" aria-label="Send message">Send</button>
-        <p id="form-status" role="alert" aria-live="assertive" style="margin-top: 1rem;"></p>
+        <p id="form-status" role="alert" aria-live="assertive"></p>
       </form>
     </section>
   </main>
@@ -529,78 +306,20 @@
     &copy; 2025 Pulitha Adhikari &nbsp;&bull;&nbsp; Crafted with <span aria-label="love">❤️</span> in Sri Lanka
   </footer>
 
-  <!-- Custom Cursor -->
-  <div id="cursor" aria-hidden="true"></div>
-
-  <!-- Sound Effects -->
-  <audio id="click-sound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
-  <audio id="ambient-sound" src="https://cdn.pixabay.com/download/audio/2022/04/17/audio_3e98e1e34f.mp3?filename=space-ambient-10679.mp3" preload="auto" loop></audio>
-
   <script>
-    // Cursor
-    const cursor = document.getElementById('cursor');
-
-    document.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-    });
-    const interactiveElements = 'a, button, input, textarea, .btn-neon, .project-card';
-    document.querySelectorAll(interactiveElements).forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('active'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
-    });
-
-    // Scroll Reveal
-    const revealElements = document.querySelectorAll('.reveal');
+    // Scroll reveal animation
+    const fadeElements = document.querySelectorAll('.fade-slide');
     function revealOnScroll() {
-      const triggerBottom = window.innerHeight * 0.85;
-      revealElements.forEach(el => {
-        const boxTop = el.getBoundingClientRect().top;
-        if (boxTop < triggerBottom) {
+      const triggerPoint = window.innerHeight * 0.85;
+      fadeElements.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if (top < triggerPoint) {
           el.classList.add('visible');
         }
       });
     }
     window.addEventListener('scroll', revealOnScroll);
     revealOnScroll();
-
-    // Play click sound on buttons and links
-    const clickSound = document.getElementById('click-sound');
-    document.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('click', () => {
-        clickSound.currentTime = 0;
-        clickSound.play();
-      });
-    });
-
-    // Ambient sound toggle
-    const ambientSound = document.getElementById('ambient-sound');
-    const soundToggle = document.getElementById('sound-toggle');
-    soundToggle.addEventListener('click', () => {
-      if (ambientSound.paused) {
-        ambientSound.play();
-        soundToggle.textContent = '🔊';
-        soundToggle.setAttribute('aria-pressed', 'true');
-      } else {
-        ambientSound.pause();
-        soundToggle.textContent = '🔈';
-        soundToggle.setAttribute('aria-pressed', 'false');
-      }
-    });
-
-    // Contact form submission (dummy)
-    const form = document.getElementById('contact-form');
-    const formStatus = document.getElementById('form-status');
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      formStatus.textContent = 'Sending...';
-
-      // Simulate sending
-      setTimeout(() => {
-        formStatus.textContent = 'Message sent successfully! Thank you!';
-        form.reset();
-      }, 1500);
-    });
 
     // Highlight nav links on scroll
     const sections = document.querySelectorAll('section');
@@ -619,6 +338,20 @@
           link.classList.add('active');
         }
       });
+    });
+
+    // Contact form submission (dummy)
+    const form = document.getElementById('contact-form');
+    const formStatus = document.getElementById('form-status');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      formStatus.textContent = 'Sending...';
+
+      // Simulate sending
+      setTimeout(() => {
+        formStatus.textContent = 'Message sent successfully! Thank you!';
+        form.reset();
+      }, 1500);
     });
   </script>
 </body>
