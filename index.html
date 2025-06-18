@@ -197,6 +197,7 @@
   <script>
     const blurLayer = document.getElementById('blur-layer');
 
+    // Initialize circle position at center
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
     let targetX = mouseX;
@@ -205,11 +206,28 @@
     blurLayer.style.setProperty('--x', `${mouseX}px`);
     blurLayer.style.setProperty('--y', `${mouseY}px`);
 
+    // Move on mouse
     document.addEventListener('mousemove', (e) => {
       targetX = e.clientX;
       targetY = e.clientY;
     });
 
+    // Move on touch
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        targetX = e.touches[0].clientX;
+        targetY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        targetX = e.touches[0].clientX;
+        targetY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    // Animate spotlight movement
     function updateBlurMask() {
       mouseX += (targetX - mouseX) * 0.1;
       mouseY += (targetY - mouseY) * 0.1;
@@ -219,6 +237,7 @@
     }
     updateBlurMask();
 
+    // Typing effect
     const roles = ["Graphic Designer", "Web Developer", "Creative Thinker", "Tech Explorer", "UI/UX Enthusiast"];
     const typingElement = document.getElementById("typing");
     let roleIndex = 0, charIndex = 0, isDeleting = false, typingPaused = false;
@@ -251,6 +270,7 @@
 
     startTyping();
 
+    // Ruler setup
     const ruler = document.getElementById("ruler");
     for (let i = 0; i < 500; i++) {
       const tick = document.createElement("div");
@@ -299,7 +319,6 @@
       if (!isDragging) return;
       isDragging = false;
       container.style.cursor = "grab";
-
       if (!inAbout && targetDeltaX < -250) {
         inAbout = true;
         updatePageState();
@@ -313,7 +332,7 @@
       }
     });
 
-    // Touch support
+    // Touch drag for ruler
     container.addEventListener("touchstart", (e) => {
       isDragging = true;
       startX = e.touches[0].clientX;
@@ -331,7 +350,6 @@
       if (!isDragging) return;
       isDragging = false;
       container.style.cursor = "grab";
-
       if (!inAbout && targetDeltaX < -250) {
         inAbout = true;
         updatePageState();
@@ -345,6 +363,7 @@
       }
     }, { passive: true });
 
+    // Animate ruler movement
     function animate() {
       if (!isDragging) {
         currentDeltaX += (snapTargetX - currentDeltaX) * 0.1;
