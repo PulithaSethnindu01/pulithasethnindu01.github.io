@@ -172,6 +172,39 @@ body, h1, p, .typing, .about, .content {
   user-select: none;
 }
 
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2em;
+  }
+
+  .typing, .about {
+    font-size: 1em;
+    padding: 0 10px;
+  }
+
+  .about {
+    max-width: 90%;
+    line-height: 1.5;
+    text-align: justify;
+  }
+
+  #next-arrow,
+  #prev-arrow {
+    width: 16px;
+    height: 16px;
+    border-width: 0 2px 2px 0;
+  }
+
+  .ruler-container {
+    height: 50px;
+  }
+
+  .tick.short .tick-line { height: 18px; }
+  .tick.medium .tick-line { height: 28px; }
+  .tick.long .tick-line { height: 40px; }
+}
+
+
   </style>
 </head>
 <body>
