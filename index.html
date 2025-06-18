@@ -197,7 +197,6 @@
   <script>
     const blurLayer = document.getElementById('blur-layer');
 
-    // Initialize position
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;
     let targetX = mouseX;
@@ -313,6 +312,38 @@
         snapTargetX = inAbout ? -300 : 250;
       }
     });
+
+    // Touch support
+    container.addEventListener("touchstart", (e) => {
+      isDragging = true;
+      startX = e.touches[0].clientX;
+      targetDeltaX = 0;
+      container.style.cursor = "grabbing";
+      ruler.style.transition = "none";
+    }, { passive: true });
+
+    document.addEventListener("touchmove", (e) => {
+      if (!isDragging) return;
+      targetDeltaX = e.touches[0].clientX - startX;
+    }, { passive: true });
+
+    document.addEventListener("touchend", () => {
+      if (!isDragging) return;
+      isDragging = false;
+      container.style.cursor = "grab";
+
+      if (!inAbout && targetDeltaX < -250) {
+        inAbout = true;
+        updatePageState();
+        snapTargetX = -300;
+      } else if (inAbout && targetDeltaX > 200) {
+        inAbout = false;
+        updatePageState();
+        snapTargetX = 250;
+      } else {
+        snapTargetX = inAbout ? -300 : 250;
+      }
+    }, { passive: true });
 
     function animate() {
       if (!isDragging) {
