@@ -9,7 +9,6 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      user-select: none;
     }
 
     html, body {
@@ -35,12 +34,17 @@
       backdrop-filter: blur(12px);
       z-index: -1;
       pointer-events: none;
-      mask: radial-gradient(circle 250px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
-      -webkit-mask: radial-gradient(circle 250px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
+      mask: radial-gradient(circle 250px at var(--x, 50%) var(--y, 50%),
+        transparent 0%,
+        transparent 96%,
+        rgba(0, 0, 0, 0.8) 98%,
+        black 100%);
+      -webkit-mask: radial-gradient(circle 250px at var(--x, 50%) var(--y, 50%),
+        transparent 0%,
+        transparent 96%,
+        rgba(0, 0, 0, 0.8) 98%,
+        black 100%);
       transition: mask 0.2s ease, -webkit-mask 0.2s ease;
-      /* Stroke around unblurred circle */
-      box-shadow: 0 0 0 1.5px rgba(255 255 255 / 0.5);
-      -webkit-box-shadow: 0 0 0 1.5px rgba(255 255 255 / 0.5);
     }
 
     .content {
@@ -60,8 +64,6 @@
     h1 {
       font-size: 3em;
       margin-bottom: 0.5em;
-      cursor: pointer;
-      user-select: none;
     }
 
     .typing {
@@ -70,8 +72,6 @@
       white-space: nowrap;
       overflow: hidden;
       min-height: 1.5em;
-      cursor: pointer;
-      user-select: none;
     }
 
     .about {
@@ -79,8 +79,6 @@
       max-width: 700px;
       line-height: 1.6;
       display: none;
-      user-select: none;
-      text-align: center;
     }
 
     .ruler-container {
@@ -124,12 +122,10 @@
       background-color: white;
     }
 
-    /* Longer tick lines */
     .tick.short .tick-line { height: 25px; opacity: 0.4; }
     .tick.medium .tick-line { height: 40px; opacity: 0.7; }
     .tick.long .tick-line { height: 60px; opacity: 1; }
 
-    /* Tooltip for drag word */
     #drag-tooltip {
       position: fixed;
       pointer-events: none;
@@ -147,7 +143,6 @@
       z-index: 10;
     }
 
-    /* Navigation arrows */
     #next-arrow, #prev-arrow {
       position: fixed;
       top: 50%;
@@ -173,38 +168,41 @@
       left: 20px;
       transform: translateY(-50%) rotate(135deg);
     }
+    body, h1, p, .typing, .about, .content {
+  user-select: none;
+}
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2em;
+  }
 
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 2em;
-      }
+  .typing, .about {
+    font-size: 1em;
+    padding: 0 10px;
+  }
 
-      .typing, .about {
-        font-size: 1em;
-        padding: 0 10px;
-      }
+  .about {
+    max-width: 90%;
+    line-height: 1.5;
+    text-align: justify;
+  }
 
-      .about {
-        max-width: 90%;
-        line-height: 1.5;
-        text-align: justify;
-      }
+  #next-arrow,
+  #prev-arrow {
+    width: 16px;
+    height: 16px;
+    border-width: 0 2px 2px 0;
+  }
 
-      #next-arrow,
-      #prev-arrow {
-        width: 16px;
-        height: 16px;
-        border-width: 0 2px 2px 0;
-      }
+  .ruler-container {
+    height: 50px;
+  }
 
-      .ruler-container {
-        height: 50px;
-      }
+  .tick.short .tick-line { height: 18px; }
+  .tick.medium .tick-line { height: 28px; }
+  .tick.long .tick-line { height: 40px; }
+}
 
-      .tick.short .tick-line { height: 18px; }
-      .tick.medium .tick-line { height: 28px; }
-      .tick.long .tick-line { height: 40px; }
-    }
   </style>
 </head>
 <body>
@@ -233,11 +231,48 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script>
     const blurLayer = document.getElementById('blur-layer');
+
+    // Initialize circle position at center
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let targetX = mouseX;
+    let targetY = mouseY;
+
+    blurLayer.style.setProperty('--x', `${mouseX}px`);
+    blurLayer.style.setProperty('--y', `${mouseY}px`);
+
+    // Move on mouse
     document.addEventListener('mousemove', (e) => {
-      blurLayer.style.setProperty('--x', `${e.clientX}px`);
-      blurLayer.style.setProperty('--y', `${e.clientY}px`);
+      targetX = e.clientX;
+      targetY = e.clientY;
     });
 
+    // Move on touch
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length > 0) {
+        targetX = e.touches[0].clientX;
+        targetY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        targetX = e.touches[0].clientX;
+        targetY = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    // Animate spotlight movement
+    function updateBlurMask() {
+      mouseX += (targetX - mouseX) * 0.1;
+      mouseY += (targetY - mouseY) * 0.1;
+      blurLayer.style.setProperty('--x', `${mouseX}px`);
+      blurLayer.style.setProperty('--y', `${mouseY}px`);
+      requestAnimationFrame(updateBlurMask);
+    }
+    updateBlurMask();
+
+    // Typing effect
     const roles = ["Graphic Designer", "Web Developer", "Creative Thinker", "Tech Explorer", "UI/UX Enthusiast"];
     const typingElement = document.getElementById("typing");
     let roleIndex = 0, charIndex = 0, isDeleting = false, typingPaused = false;
@@ -270,6 +305,7 @@
 
     startTyping();
 
+    // Ruler setup
     const ruler = document.getElementById("ruler");
     for (let i = 0; i < 500; i++) {
       const tick = document.createElement("div");
@@ -295,8 +331,8 @@
     let isDragging = false;
     let startX = 0;
     let targetDeltaX = 0;
-    let currentDeltaX = 250; // default start offset
-    let snapTargetX = 250; // smooth snap target
+    let currentDeltaX = 250;
+    let snapTargetX = 250;
     let inAbout = false;
 
     container.style.cursor = "grab";
@@ -318,7 +354,6 @@
       if (!isDragging) return;
       isDragging = false;
       container.style.cursor = "grab";
-
       if (!inAbout && targetDeltaX < -250) {
         inAbout = true;
         updatePageState();
@@ -332,10 +367,41 @@
       }
     });
 
-    // Animate ruler position with easing for smooth release
+    // Touch drag for ruler
+    container.addEventListener("touchstart", (e) => {
+      isDragging = true;
+      startX = e.touches[0].clientX;
+      targetDeltaX = 0;
+      container.style.cursor = "grabbing";
+      ruler.style.transition = "none";
+    }, { passive: true });
+
+    document.addEventListener("touchmove", (e) => {
+      if (!isDragging) return;
+      targetDeltaX = e.touches[0].clientX - startX;
+    }, { passive: true });
+
+    document.addEventListener("touchend", () => {
+      if (!isDragging) return;
+      isDragging = false;
+      container.style.cursor = "grab";
+      if (!inAbout && targetDeltaX < -250) {
+        inAbout = true;
+        updatePageState();
+        snapTargetX = -300;
+      } else if (inAbout && targetDeltaX > 200) {
+        inAbout = false;
+        updatePageState();
+        snapTargetX = 250;
+      } else {
+        snapTargetX = inAbout ? -300 : 250;
+      }
+    }, { passive: true });
+
+    // Animate ruler movement
     function animate() {
       if (!isDragging) {
-        currentDeltaX += (snapTargetX - currentDeltaX) * 0.1; // easing
+        currentDeltaX += (snapTargetX - currentDeltaX) * 0.1;
       } else {
         const baseOffset = inAbout ? -300 : 250;
         const desiredX = baseOffset + targetDeltaX;
@@ -390,16 +456,6 @@
         snapTargetX = 250;
       }
     });
-
-    // Tap-to-toggle About on all screen sizes
-    document.getElementById("main-title").addEventListener("click", toggleAboutView);
-    document.getElementById("typing").addEventListener("click", toggleAboutView);
-
-    function toggleAboutView() {
-      inAbout = !inAbout;
-      updatePageState();
-      snapTargetX = inAbout ? -300 : 250;
-    }
   </script>
 </body>
 </html>
