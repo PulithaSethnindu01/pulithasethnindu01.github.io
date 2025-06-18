@@ -169,8 +169,38 @@
         }
 
 
-        #about-summary-content .portfolio-button {
-            margin-top: 20px; /* Space above the 'Learn More' button */
+        /* Downward arrows for "About Me" section */
+        .scroll-down-arrows {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: #f0f0f0; /* Match font color */
+            opacity: 1; /* Initially visible */
+            transition: opacity 0.3s ease;
+        }
+
+        .scroll-down-arrows i {
+            font-size: 2em;
+            margin-bottom: -10px; /* Overlap arrows slightly */
+            animation: bounce 2s infinite; /* Add a subtle bounce animation */
+        }
+
+        .scroll-down-arrows i:nth-child(2) {
+            animation-delay: 0.2s; /* Stagger the bounce effect */
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
         }
 
         #about-detail-content {
@@ -439,7 +469,11 @@
                 <p>
                     I'm Pulitha Sethnindu, a passionate graphic designer and web developer. With a love for visual storytelling and functional design, I blend creativity with clean code to build engaging digital experiences. Whether it's UI/UX, animation, or frontend magic, I love turning ideas into reality.
                 </p>
-                <button class="portfolio-button" id="more-about-me-button">Learn More About Me</button>
+                <!-- Replaced "Learn More About Me" button with scroll-down arrows -->
+                <div class="scroll-down-arrows" id="scroll-down-arrows">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
             </div>
 
             <!-- Detailed About Me Section - Initially hidden, revealed by scrolling -->
@@ -560,7 +594,8 @@
         const aboutPageTitle = document.getElementById("about-page-title"); // Title for about page
         const contactPageTitle = document.getElementById("contact-page-title"); // Title for contact page
 
-        const moreAboutMeButton = document.getElementById("more-about-me-button");
+        // const moreAboutMeButton = document.getElementById("more-about-me-button"); // REMOVED
+        const scrollDownArrows = document.getElementById("scroll-down-arrows"); // NEW ARROWS
         const contactButton = document.getElementById("contact-button"); // "Contact Me" button on detailed about page
 
         // Spotlight effect for blur layer - REINTRODUCED
@@ -785,8 +820,8 @@
 
                     typingElement.style.display = 'none';
 
-                    // Ensure moreAboutMeButton is hidden by default unless explicitly shown
-                    gsap.set(moreAboutMeButton, { opacity: 0, pointerEvents: 'none' });
+                    // Ensure scroll-down arrows are hidden by default unless explicitly shown
+                    gsap.set(scrollDownArrows, { opacity: 0, pointerEvents: 'none' }); // NEW: Hide arrows
 
                     let currentSection;
                     let currentTitleElement;
@@ -819,8 +854,10 @@
                             aboutDetailContent.style.opacity = 0;
                             aboutDetailContent.style.pointerEvents = 'none';
                             isAboutDetailedView = false; // Reset detailed view on page load
-                            gsap.to(moreAboutMeButton, { opacity: 1, pointerEvents: 'auto', duration: 0.3, delay: 0.5 }); // Show button for about summary
-
+                            
+                            // Show scroll-down arrows instead of a button
+                            gsap.to(scrollDownArrows, { opacity: 1, pointerEvents: 'auto', duration: 0.3, delay: 0.5 }); // NEW: Show arrows
+                            
                             gsap.fromTo(currentSection, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, delay: 0.2 });
                             gsap.fromTo(currentTitleElement, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.5 });
                             
@@ -893,8 +930,8 @@
             }
         });
 
-        // "Learn More About Me" button click - SCROLLS DOWN
-        moreAboutMeButton.addEventListener('click', () => {
+        // NEW: Scroll down arrows click handler
+        scrollDownArrows.addEventListener('click', () => {
             if (currentPage === 1) { // Only do this if on the About page
                 gsap.to(contentArea, {
                     duration: 1.0,
@@ -915,12 +952,13 @@
                         aboutPageTitle.textContent = "My Story";
                     },
                     onComplete: () => {
-                        // Hide the 'Learn More' button after scrolling
-                        gsap.to(moreAboutMeButton, { opacity: 0, pointerEvents: 'none', duration: 0.3 });
+                        // Hide the scroll-down arrows after scrolling
+                        gsap.to(scrollDownArrows, { opacity: 0, pointerEvents: 'none', duration: 0.3 }); // NEW: Hide arrows
                     }
                 });
             }
         });
+
 
         // "Contact Me" button click (from detailed about page)
         contactButton.addEventListener('click', () => {
