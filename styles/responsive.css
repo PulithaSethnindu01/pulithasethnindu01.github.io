@@ -1,0 +1,181 @@
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .content {
+        padding: 10px;
+        padding-bottom: 70px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    h3 {
+        font-size: 1.2em;
+    }
+
+    .typing, .page-section {
+        font-size: 1em;
+        padding: 0 10px;
+        max-width: 95%;
+    }
+
+    .page-section {
+        line-height: 1.5;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    #home-section {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    #next-arrow,
+    #prev-arrow {
+        display: none;
+    }
+
+    .ruler-container {
+        height: 50px;
+    }
+
+    .tick.short .tick-line { 
+        height: 18px; 
+    }
+
+    .tick.medium .tick-line { 
+        height: 28px; 
+    }
+
+    .tick.long .tick-line { 
+        height: 40px; 
+    }
+
+    .ruler-label {
+        bottom: 55px;
+        font-size: 0.8em;
+    }
+
+    .about-detail-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .about-detail-item {
+        padding: 15px;
+    }
+
+    .about-detail-item img {
+        height: 150px;
+    }
+
+    .contact-methods {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .contact-item {
+        width: 90%;
+        min-width: auto;
+    }
+
+    .contact-form {
+        max-width: 95%;
+    }
+
+    .skill-tags {
+        gap: 6px;
+    }
+
+    .skill-tag {
+        font-size: 0.7em;
+        padding: 3px 8px;
+    }
+}
+
+@media (min-width: 769px) {
+    .about-detail-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .content {
+        padding: 5px;
+        padding-bottom: 60px;
+    }
+
+    .about, .about-detail, .contact-section-content {
+        padding: 15px;
+    }
+
+    .contact-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+        padding: 10px 15px;
+    }
+
+    .scroll-down-arrows i {
+        font-size: 1.5em;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .background {
+        background-image: url('https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg?auto=compress&cs=tinysrgb&w=2560&h=1440&fit=crop');
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .portfolio-button {
+        background-color: rgba(79, 195, 247, 0.15);
+    }
+    
+    .skill-tag {
+        background: rgba(79, 195, 247, 0.15);
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .scroll-down-arrows i {
+        animation: none;
+    }
+}
+
+/* Print styles */
+@media print {
+    .ruler-container,
+    #next-arrow,
+    #prev-arrow,
+    .scroll-down-arrows {
+        display: none;
+    }
+    
+    .content {
+        overflow: visible;
+        height: auto;
+    }
+    
+    .page-section {
+        opacity: 1;
+        page-break-inside: avoid;
+    }
+}
